@@ -56,9 +56,9 @@ os.system('clear')
 # passing arguments and/or define some variabiles
 # Create the parser
 parser = argparse.ArgumentParser()
-parser.add_argument('-v', '--verbose', action='store_true', dest='verbose')
-parser.add_argument('-c', '--check_only', action='store_true', dest='check_only')
-parser.add_argument('filename', type=pathlib.Path)
+parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info')
+parser.add_argument('-c', '--check_only', action='store_true', dest='check_only', help='do not update filename with last commit info')
+parser.add_argument('filename', type=pathlib.Path, help='a csv formatted text file with list of git repos to check')
 args = parser.parse_args()
 #print('verbose is', args.verbose)
 #print('check_only is', args.check_only)
@@ -98,19 +98,19 @@ index = 0
 # set header for final list/multiline string to write in the text file
 all_rows  = ['Repo_Name,Last_Check,Current_Commit'] 
 
-# some statistic header
-print (colors.reset + '✔ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName +'.')
-print (colors.reset + '✔ Current check time: ' + colors.fg.purple + now)
+# some statistics
+print (colors.reset + '→ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName +'.')
+print (colors.reset + '→ Current check time: ' + colors.fg.purple + now)
 print (colors.reset)
 
-# check latest commit for each repo using git ls-remote commaand
+# check latest commit for each repo using git ls-remote command
 for repo_url in repoList:
 	process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 	stdout, stderr = process.communicate()
 	lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
 	print(colors.reset + colors.fg.lightblue + '→ ' + '[' + str(index + 1)+ '] ' + colors.bold + repo_url)
 	
-	# update checking time
+	# update check time
 	now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 	
 	if currentCommit[index] != lastCommit:
@@ -130,7 +130,7 @@ for repo_url in repoList:
 filename.close()
 
 # update the file unless -c
-# but befonre convert all_rows list in a multiline string
+# but, before, convert all_rows list in a multiline string
 if checkonly == False :
 	result = '\n'.join(all_rows)
 	with open(fName, 'w') as filename:

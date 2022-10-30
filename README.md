@@ -1,5 +1,8 @@
 # git-check
 
+A simple python app that check if remote git repo have new commit since last check time.<br />
+A wrote this utility to avoid check manually every git repo to see if there are some changes before to compile the relative AUR pkgbuild.<br />
+
 ```
 usage: git-check.py [-h] [-v] [-c] filename.csv
 

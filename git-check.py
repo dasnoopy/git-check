@@ -51,7 +51,7 @@ os.system('clear')
 # some variables
 fName='list_projects.txt'
 verbose=True
-
+checkonly=False
 
 print ('Number of arguments:', len(sys.argv), 'arguments.')
 print ('Argument List:', str(sys.argv))
@@ -85,29 +85,31 @@ for repo_url in repoList:
 	print(colors.reset + "→ Checking : " + colors.fg.blue + colors.bold + repo_url)
 	
 	if currentCommit[index] != lastCommit:
-		print(colors.fg.red + '✔ ...git repo has been update since last check!')
-		print(colors.reset)
+		print(colors.fg.red + '✔ ...git repo has been update since last check...')
 	else:
-		print(colors.fg.green + '✔ ...no changes from last check!')
-		print(colors.reset)
-# show commits info
+		print(colors.fg.green + '✔ ...no changes from last check...')
+	# show commits info
 	if verbose == True :
-		print(colors.reset + 'Previous commit : ' + colors.fg.cyan + currentCommit[index])
-		print(colors.reset + 'Latest commit   : ' + colors.fg.lightcyan + lastCommit)
-		print(colors.reset)
+		print(colors.reset + '→ Previous commit : ' + colors.fg.orange + currentCommit[index])
+		print(colors.reset + '→ Latest commit   : ' + colors.fg.lightcyan + lastCommit)
 
+	print (colors.reset)
 	all_rows.append(repo_url+','+lastCommit)
 	index += 1
 
 filename.close()
 
-#convert all_rows list in a multiline string
-result = '\n'.join(all_rows)
 # write the file
-with open(fName, 'w') as filename:
-   filename.writelines(result)
-   filename.close()
+# but befonre convert all_rows list in a multiline string
+if checkonly == False :
+	result = '\n'.join(all_rows)
+
+	with open(fName, 'w') as filename:
+		filename.writelines(result)
+		filename.close()
 
 # TODO list
 # parametro -v --verbose per stampare le tre righe
+# parametro -c --check-only per controllare ma non aggiornare file con ultimo commit
 # salvare e scrivere orario ultimo check  
+# indentatura migliore usare main e def+

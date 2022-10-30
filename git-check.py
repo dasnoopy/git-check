@@ -7,6 +7,9 @@ import csv
 import subprocess
 import re
 import datetime
+import argparse
+import pathlib
+import errno
 
 gi.require_version("Gtk", "4.0")
 from gi.repository import Gtk
@@ -49,21 +52,32 @@ class colors:
 
 # pulizia screen e set dbname
 os.system('clear')
-# some variables
-fName='list_projects.csv'
-verbose=True
-checkonly=False
 
-print ('Number of arguments:', len(sys.argv), 'arguments.')
-print ('Argument List:', str(sys.argv))
-print ()
+# passing arguments and/or define some variabiles
+# Create the parser
+parser = argparse.ArgumentParser()
+parser.add_argument('-v', '--verbose', action='store_true', dest='verbose')
+parser.add_argument('-c', '--check_only', action='store_true', dest='check_only')
+parser.add_argument('file', type=pathlib.Path)
+args = parser.parse_args()
+#print('verbose is', args.verbose)
+#print('check_only is', args.check_only)
+#print('filename  is', args.file)
+
+fName=str(args.file)
+verbose=args.verbose
+checkonly=args.check_only
 
 # initial checking  time
-adesso = datetime.datetime.now()
-now = adesso.strftime("%d/%m/%Y_%H:%M:%S")
+now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 
 # open the file in read mode
-filename = open(fName, 'r')
+try:
+	filename = open(fName, 'r')
+except FileNotFoundError as error:
+	print (colors.fg.red + 'Errore: '+ colors.reset + fName + colors.fg.red + ' non trovato o inesistente!')
+	print (colors.reset)
+	sys.exit()
 
 # creating dictreader object
 dictName= csv.DictReader(filename)
@@ -85,8 +99,8 @@ index = 0
 all_rows  = ['Repo_Name,Last_Check,Latest_Commit'] 
 
 # some statistic header
-print ('# Checking ' + str(len(repoList)) + ' remote git repos from file: ' + fName +'.')
-print ('# Current check time: ' + colors.fg.red + now)
+print (colors.reset + '# Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.orange + fName +'.')
+print (colors.reset + '# Current check time: ' + colors.fg.red + now)
 print (colors.reset)
 
 # check latest commit for each repo using git ls-remote commaand
@@ -94,11 +108,10 @@ for repo_url in repoList:
 	process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 	stdout, stderr = process.communicate()
 	lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
-	print(colors.reset + '→ [' + str(index +1)+ '] git repo: ' + colors.fg.blue + colors.bold + repo_url)
+	print(colors.reset + '→ [' + str(index + 1)+ '] git repo: ' + colors.fg.blue + colors.bold + repo_url)
 	
 	# update checking time
-	adesso = datetime.datetime.now()
-	now = adesso.strftime("%d/%m/%Y_%H:%M:%S")
+	now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 	
 	if currentCommit[index] != lastCommit:
 		print(colors.fg.red + '✔ ...changes since last check (' + checktime[index] + ')' )
@@ -106,8 +119,9 @@ for repo_url in repoList:
 		print(colors.fg.green + '✔ ...no changes since last check (' + checktime[index] + ')' )
 	# show commits info
 	if verbose == True :
-		print(colors.reset + '→ Previous commit : ' + colors.fg.orange + currentCommit[index])
 		print(colors.reset + '→ Latest commit   : ' + colors.fg.lightcyan + lastCommit)
+		print(colors.reset + '→ Previous commit : ' + colors.fg.orange + currentCommit[index])
+
 
 	print (colors.reset)
 	all_rows.append(repo_url+',' + now + ','+lastCommit)
@@ -119,18 +133,10 @@ filename.close()
 # but befonre convert all_rows list in a multiline string
 if checkonly == False :
 	result = '\n'.join(all_rows)
-
 	with open(fName, 'w') as filename:
 		filename.writelines(result)
 		filename.close()
 
 # TODO list
-# parametro -v --verbose per stampare  righe commit
-# parametro -c --check-only per controllare ma non aggiornare il file con la lista dei repo, con ultimo commit
-# parametro -l --list usa una lista da un percorso e nome che si vuole es -l /home/andrea/dati/gitrep.txt
-# indentatura migliore usare main e def+
-#lista repo non viene trovata se si lancia script con path assoluto
+#usare def e main
 
-    # storing current date and time
-   # current_date_time = datetime.now()
-   #https://www.geeksforgeeks.org/how-to-add-timestamp-to-csv-file-in-python/

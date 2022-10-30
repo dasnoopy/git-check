@@ -75,7 +75,7 @@ now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 try:
 	filename = open(fName, 'r')
 except FileNotFoundError as error:
-	print (colors.fg.red + 'Errore: '+ colors.reset + fName + colors.fg.red + ' non trovato o inesistente!')
+	print (colors.fg.red + 'Errore: '+ colors.reset + fName + colors.fg.purple + ' non trovato o inesistente!')
 	print (colors.reset)
 	sys.exit()
 
@@ -99,8 +99,8 @@ index = 0
 all_rows  = ['Repo_Name,Last_Check,Latest_Commit'] 
 
 # some statistic header
-print (colors.reset + '# Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.orange + fName +'.')
-print (colors.reset + '# Current check time: ' + colors.fg.red + now)
+print (colors.reset + '✔ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName +'.')
+print (colors.reset + '✔ Current check time: ' + colors.fg.purple + now)
 print (colors.reset)
 
 # check latest commit for each repo using git ls-remote commaand
@@ -108,19 +108,19 @@ for repo_url in repoList:
 	process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 	stdout, stderr = process.communicate()
 	lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
-	print(colors.reset + '→ [' + str(index + 1)+ '] git repo: ' + colors.fg.blue + colors.bold + repo_url)
+	print(colors.reset + '✔ [' + str(index + 1)+ '] ' + colors.fg.blue + colors.bold + repo_url)
 	
 	# update checking time
 	now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 	
 	if currentCommit[index] != lastCommit:
-		print(colors.fg.red + '✔ ...changes since last check (' + checktime[index] + ')' )
+		print(colors.fg.red + '✘ ...changes since last check (' + checktime[index] + ')' )
 	else:
 		print(colors.fg.green + '✔ ...no changes since last check (' + checktime[index] + ')' )
 	# show commits info
 	if verbose == True :
-		print(colors.reset + '→ Latest commit   : ' + colors.fg.lightcyan + lastCommit)
-		print(colors.reset + '→ Previous commit : ' + colors.fg.orange + currentCommit[index])
+		print(colors.reset + '✔ Latest commit   : ' + colors.fg.darkgrey + lastCommit)
+		print(colors.reset + '✔ Previous commit : ' + colors.fg.darkgrey + currentCommit[index])
 
 
 	print (colors.reset)
@@ -137,6 +137,6 @@ if checkonly == False :
 		filename.writelines(result)
 		filename.close()
 
+sys.exit()
 # TODO list
 #usare def e main
-

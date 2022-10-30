@@ -108,28 +108,28 @@ for repo_url in repoList:
 	process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 	stdout, stderr = process.communicate()
 	lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
-	print(colors.reset + '✔ [' + str(index + 1)+ '] ' + colors.fg.blue + colors.bold + repo_url)
+	print(colors.reset + colors.fg.lightblue + '→ ' + '[' + str(index + 1)+ '] ' + colors.bold + repo_url)
 	
 	# update checking time
 	now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 	
 	if currentCommit[index] != lastCommit:
-		print(colors.fg.red + '✘ ...changes since last check (' + checktime[index] + ')' )
+		print(colors.fg.red + '✘ ...some changes since last check (' + checktime[index] + ')' )
 	else:
 		print(colors.fg.green + '✔ ...no changes since last check (' + checktime[index] + ')' )
 	# show commits info
 	if verbose == True :
-		print(colors.reset + '✔ Latest commit: ' + colors.fg.darkgrey + lastCommit)
-		print(colors.reset + '✔ Stored commit: ' + colors.fg.darkgrey + currentCommit[index])
-
+		print(colors.reset + '→ Stored commit: ' + colors.fg.lightcyan + currentCommit[index])
+		print(colors.reset + '→ Latest commit: ' + colors.fg.yellow + lastCommit)
 
 	print (colors.reset)
 	all_rows.append(repo_url+',' + now + ','+lastCommit)
 	index += 1
 
+# close the file after all operations
 filename.close()
 
-# write the file
+# update the file unless -c
 # but befonre convert all_rows list in a multiline string
 if checkonly == False :
 	result = '\n'.join(all_rows)

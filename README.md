@@ -21,7 +21,7 @@ _*filename.csv*_ must be a csv file with header, e.g. :
 |https://github.com/user/another_project.git|0|0
 
 **Note 2:**<br />
-When add a new git repo to the file, Last_Check and Latest_Commit can be any numeric value.<br />
+When add a new git repo to the file, Last_Check and Current_Commit can be any numeric value.<br />
 These values will be overwritten,with correct info,after first script run unless you use the `--check_only` argument.
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

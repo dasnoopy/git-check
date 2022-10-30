@@ -15,7 +15,7 @@ options:
 **Note 1:**
 _*filename.csv*_ must be a csv file with header, e.g. : 
 
-| Repo Name | Last Check | Latest Commit |
+| Repo_Name | Last_Check | Current_Commit |
 | :---      | :---       | :---          |
 |https://github.com/user/one_project.git|0|0
 |https://github.com/user/another_project.git|0|0

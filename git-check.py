@@ -58,13 +58,13 @@ os.system('clear')
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--verbose', action='store_true', dest='verbose')
 parser.add_argument('-c', '--check_only', action='store_true', dest='check_only')
-parser.add_argument('file', type=pathlib.Path)
+parser.add_argument('filename', type=pathlib.Path)
 args = parser.parse_args()
 #print('verbose is', args.verbose)
 #print('check_only is', args.check_only)
 #print('filename  is', args.file)
 
-fName=str(args.file)
+fName=str(args.filename)
 verbose=args.verbose
 checkonly=args.check_only
 
@@ -75,7 +75,7 @@ now = datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
 try:
 	filename = open(fName, 'r')
 except FileNotFoundError as error:
-	print (colors.fg.red + 'Errore: '+ colors.reset + fName + colors.fg.purple + ' non trovato o inesistente!')
+	print (colors.fg.red + 'Error: '+ colors.reset + fName + colors.fg.purple + ' not found! Please check filename or path.')
 	print (colors.reset)
 	sys.exit()
 
@@ -92,11 +92,11 @@ currentCommit = []
 for col in dictName:
 	repoList.append(col['Repo_Name'])
 	checktime.append(col['Last_Check'])
-	currentCommit.append(col['Latest_Commit'])
+	currentCommit.append(col['Current_Commit'])
 
 index = 0
 # set header for final list/multiline string to write in the text file
-all_rows  = ['Repo_Name,Last_Check,Latest_Commit'] 
+all_rows  = ['Repo_Name,Last_Check,Current_Commit'] 
 
 # some statistic header
 print (colors.reset + '✔ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName +'.')
@@ -119,8 +119,8 @@ for repo_url in repoList:
 		print(colors.fg.green + '✔ ...no changes since last check (' + checktime[index] + ')' )
 	# show commits info
 	if verbose == True :
-		print(colors.reset + '✔ Latest commit   : ' + colors.fg.darkgrey + lastCommit)
-		print(colors.reset + '✔ Previous commit : ' + colors.fg.darkgrey + currentCommit[index])
+		print(colors.reset + '✔ Latest commit: ' + colors.fg.darkgrey + lastCommit)
+		print(colors.reset + '✔ Stored commit: ' + colors.fg.darkgrey + currentCommit[index])
 
 
 	print (colors.reset)

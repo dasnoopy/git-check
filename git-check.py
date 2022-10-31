@@ -72,12 +72,6 @@ fName=str(args.filename)
 verbose=args.verbose
 checkonly=args.check_only
 
-# create a backup of original file unless -c is passed
-if checkonly == False :
-	tempTuple = os.path.splitext(fName)
-	bName = tempTuple[0] + '.bak'
-	shutil.copyfile(fName, bName)
-
 # initial checking  time
 def orario ():
 	return datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
@@ -90,6 +84,12 @@ def check_repos():
 		print (colors.fg.red + 'Error: '+ colors.reset + 'file [ ' + fName + ' ] not found! Please check filename or path.')
 		print (colors.reset)
 		sys.exit()
+
+	# create a backup of original file unless -c is passed
+	if checkonly == False :
+		tempTuple = os.path.splitext(fName)
+		bName = tempTuple[0] + '.bak'
+		shutil.copyfile(fName, bName)
 
 	# creating dictreader object
 	dictName= csv.DictReader(filename)

@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-
+#
+# git-check by Andrea Antolini
+#
 import os
-import gi
 import sys
 import csv
 import subprocess
@@ -11,11 +12,6 @@ import argparse
 import pathlib
 import shutil
 import errno
-
-from pathlib import Path
-
-gi.require_version("Gtk", "4.0")
-from gi.repository import Gtk
 
 class colors:
 	reset = '\033[0m'
@@ -74,7 +70,7 @@ checkonly=args.check_only
 
 # initial checking  time
 def orario ():
-	return datetime.datetime.now().strftime("%d%m%Y-%H%M%S")
+	return datetime.datetime.now().strftime("%d-%b-%Y/%H:%M:%S")
 
 def check_repos():
 	# open the file in read mode
@@ -114,7 +110,7 @@ def check_repos():
 	all_rows  = ['Repo_Name,Last_Check,Current_Commit'] 
 
 	# some initial statistics
-	print (colors.reset + '❯ Checking ' + str(len(repoList)) + ' remote git repos from given file [ ' + fName +' ]')
+	print (colors.bold + '❯ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName)
 	print (colors.reset + '❯ Current check time: ' + colors.fg.purple + orario() )
 	print (colors.reset)
 
@@ -127,15 +123,15 @@ def check_repos():
 		
 		if currentCommit[index] != lastCommit:
 			changed += 1
-			print(colors.fg.red + '✘ ...some changes since last check (' + checktime[index] + ')' )
+			print(colors.fg.red + '✔ ...some changes since last check: ' + colors.bold + checktime[index])
 		else:
 			not_changed += 1
-			print(colors.fg.green + '✔ ...no changes since last check (' + checktime[index] + ')' )
+			print(colors.fg.green + '✔ ...no changes since last check: ' + colors.bold + checktime[index])
 		
 		# show commits info
 		if verbose == True :
-			print(colors.reset + colors.bold + '→ Stored commit: ' + colors.reset + colors.fg.lightcyan + currentCommit[index])
-			print(colors.reset + colors.bold + '→ Latest commit: ' + colors.reset + colors.fg.yellow + lastCommit)
+			print(colors.reset + '→ Stored commit: ' + colors.bold + colors.fg.lightcyan + currentCommit[index])
+			print(colors.reset + '→ Latest commit: ' + colors.bold + colors.fg.yellow + lastCommit)
 
 		print (colors.reset)
 		# append rows

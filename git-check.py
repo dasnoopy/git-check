@@ -50,7 +50,7 @@ class colors:
 		cyan = '\033[46m'
 		lightgrey = '\033[47m'
 
-# pulizia screen e set dbname
+# clean screen 
 os.system('clear')
 
 # passing arguments and/or define some variabiles

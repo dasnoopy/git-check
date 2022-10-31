@@ -9,6 +9,7 @@ import re
 import datetime
 import argparse
 import pathlib
+import shutil
 import errno
 
 from pathlib import Path
@@ -70,6 +71,12 @@ args = parser.parse_args()
 fName=str(args.filename)
 verbose=args.verbose
 checkonly=args.check_only
+
+# create a backup of original file unless -c is passed
+if checkonly == False :
+	tempTuple = os.path.splitext(fName)
+	bName = tempTuple[0] + '.bak'
+	shutil.copyfile(fName, bName)
 
 # initial checking  time
 def orario ():
@@ -140,10 +147,12 @@ def check_repos():
 	# some final statistics
 	print (colors.reset + '❯ Check is over. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
 
-	# update the file unless -c is specified
+	# update the file unless -c is passed
 	# but, before, convert all_rows list in a multiline string
 	if checkonly == False :
+		# join all rows and add a newline at the end of dict
 		result = '\n'.join(all_rows)
+		result = (result + ('\n'))
 		# update the current file
 		with open(fName, 'w') as filename:
 			filename.writelines(result)

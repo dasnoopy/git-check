@@ -70,12 +70,12 @@ checkonly=args.check_only
 
 # initial checking  time
 def orario ():
-	return datetime.datetime.now().strftime("%d-%b-%Y/%H:%M:%S")
+	return datetime.datetime.now().strftime("{%d-%b-%Y}-{%H:%M:%S}")
 
 def check_repos():
 	# open the file in read mode
 	try:
-		filename = open(fName, 'r')
+		filename = open(fName, 'r', encoding='utf-8')
 	except FileNotFoundError as error:
 		print (colors.fg.red + 'Error: '+ colors.reset + 'file [ ' + fName + ' ] not found! Please check filename or path.')
 		print (colors.reset)
@@ -150,7 +150,7 @@ def check_repos():
 		result = '\n'.join(all_rows)
 		result = (result + ('\n'))
 		# update the current file
-		with open(fName, 'w') as filename:
+		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.writelines(result)
 			filename.close()
 
@@ -161,3 +161,28 @@ if __name__ == '__main__':
 
 # TODO list
 # some error management
+# fare sempre solo check per default e al termine chiedere se salvare il file
+#definitivamente quindi backup file si crea solo se si risponde si al salvataggio finale
+# il paramentro -c quindi non servirebbe piu'
+
+"""
+def query_yes_no(question, default='no'):
+    if default is None:
+        prompt = " [y/n] "
+    elif default == 'yes':
+        prompt = " [Y/n] "
+    elif default == 'no':
+        prompt = " [y/N] "
+    else:
+        raise ValueError(f"Unknown setting '{default}' for default.")
+
+    while True:
+        try:
+            resp = input(question + prompt).strip().lower()
+            if default is not None and resp == '':
+                return default == 'yes'
+            else:
+                return distutils.util.strtobool(resp)
+        except ValueError:
+            print("Please respond with 'yes' or 'no' (or 'y' or 'n').\n")
+"""

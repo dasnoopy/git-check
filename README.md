@@ -1,6 +1,7 @@
 # git-check
 
-A simple python app that check if remote git repos' list, have new commit since last check time.<br />
+A simple python app that check if remote git repos' list, have new commit since last check.<br />
+It use `git ls-remote https:/git...` command.<br />
 I wrote this utility to avoid manually check of every git repo that I compile using AUR PKGBUILD.<br />
 
 ```
@@ -26,5 +27,8 @@ _*filename.csv*_ must be a csv file with header, e.g. :
 **Note 2:**<br />
 When add a new git repo to the file, Last_Check and Current_Commit can be any numeric value.<br />
 These values will be overwritten,with correct info,after first script run unless you use the `--check_only` argument.
+
+**Note 3:**<br />
+A backup copy of then csv file is always created before update the csv file itself. 
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

@@ -111,16 +111,17 @@ def check_repos():
 
 	# some initial statistics
 	print (colors.bold + '❯ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯ Current check time: ' + colors.fg.purple + orario() )
+	print (colors.reset + '❯ current check time: ' + colors.fg.purple + orario() )
 	print (colors.reset)
 
 	# check latest commit for each repo using git ls-remote command
 	for repo_url in repoList:
-		print(colors.reset + '→ Retrieving last remote commit id for:')
+		print(colors.reset + '→ retrieving last remote commit id for:')
+		print(colors.reset + colors.fg.blue + '→ ' + repo_url)
+
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
-		print( '→ ' + colors.bold + colors.fg.lightblue + '[' + str(index + 1)+ '] ' + colors.reset + colors.fg.blue + '→ ' + repo_url)
 		
 		if currentCommit[index] != lastCommit:
 			changed += 1
@@ -131,8 +132,8 @@ def check_repos():
 		
 		# show commits info
 		if verbose == True :
-			print(colors.reset + '→ Stored commit: ' + colors.bold + colors.fg.lightcyan + currentCommit[index])
-			print(colors.reset + '→ Latest commit: ' + colors.bold + colors.fg.yellow + lastCommit)
+			print(colors.reset + '→ stored commit: ' + colors.bold + colors.fg.lightcyan + currentCommit[index])
+			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + lastCommit)
 
 		print (colors.reset)
 		# append rows
@@ -142,7 +143,7 @@ def check_repos():
 	# close the file after all operations
 	filename.close()
 	# some final statistics
-	print (colors.reset + '❯ Check is over. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + '❯ check is over. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# update the file unless -c is passed
 	# but, before, convert all_rows list in a multiline string

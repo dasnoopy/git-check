@@ -116,10 +116,11 @@ def check_repos():
 
 	# check latest commit for each repo using git ls-remote command
 	for repo_url in repoList:
+		print(colors.reset + '→ Retrieving last remote commit id for:')
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
-		print(colors.bold + colors.fg.lightblue + '→ ' + '[' + str(index + 1)+ '] ' + colors.reset + colors.fg.blue + repo_url)
+		print( '→ ' + colors.bold + colors.fg.lightblue + '[' + str(index + 1)+ '] ' + colors.reset + colors.fg.blue + '→ ' + repo_url)
 		
 		if currentCommit[index] != lastCommit:
 			changed += 1
@@ -161,28 +162,3 @@ if __name__ == '__main__':
 
 # TODO list
 # some error management
-# fare sempre solo check per default e al termine chiedere se salvare il file
-#definitivamente quindi backup file si crea solo se si risponde si al salvataggio finale
-# il paramentro -c quindi non servirebbe piu'
-
-"""
-def query_yes_no(question, default='no'):
-    if default is None:
-        prompt = " [y/n] "
-    elif default == 'yes':
-        prompt = " [Y/n] "
-    elif default == 'no':
-        prompt = " [y/N] "
-    else:
-        raise ValueError(f"Unknown setting '{default}' for default.")
-
-    while True:
-        try:
-            resp = input(question + prompt).strip().lower()
-            if default is not None and resp == '':
-                return default == 'yes'
-            else:
-                return distutils.util.strtobool(resp)
-        except ValueError:
-            print("Please respond with 'yes' or 'no' (or 'y' or 'n').\n")
-"""

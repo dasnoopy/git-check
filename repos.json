@@ -1,0 +1,67 @@
+[
+    {
+        "Repo_Url": "https://github.com/lassekongo83/adw-gtk3.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:46}",
+        "Current_Commit": "952e5ad2eed40283b8edab726c7c669c63a76022"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/World/amberol.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:47}",
+        "Current_Commit": "553fede9bc1dec2fd64e98a997b5cb883ede3c7e"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:49}",
+        "Current_Commit": "022e1dd8ce63d388f59d1dcf05844f3ed6ea7e25"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/GNOME/console.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:51}",
+        "Current_Commit": "e6599e4bb11bfbaa237afd1b96faa08640fc9479"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/GNOME/gnome-text-editor.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:52}",
+        "Current_Commit": "b81a5807a806baf756bcd6b912d5fe3214f087c5"
+    },
+    {
+        "Repo_Url": "https://github.com/johnfactotum/foliate.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:53}",
+        "Current_Commit": "3115d245422747cb1540ef279f10d11d4f666be4"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/GNOME/meld.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:57}",
+        "Current_Commit": "ffb008ea4c8ad7b1fb3ae123d7558aa5a3b7c027"
+    },
+    {
+        "Repo_Url": "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:57}",
+        "Current_Commit": "cce26033eab9ba4128abb4c1eca865323d2c5795"
+    },
+    {
+        "Repo_Url": "https://github.com/realmazharhussain/gdm-settings.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:57}",
+        "Current_Commit": "ba4d46509d69a296ebed1b97367b5f775d17b7b0"
+    },
+    {
+        "Repo_Url": "https://github.com/knuxify/eartag.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:58}",
+        "Current_Commit": "d3c9b16a4c12d6cde1c0e1d666f42ec14d29b755"
+    },
+    {
+        "Repo_Url": "https://github.com/audacious-media-player/audacious",
+        "Last_Check": "{05-Nov-2022}-{21:17:58}",
+        "Current_Commit": "a5afdc2009458f7c3e6f6e2989cf3f211a124891"
+    },
+    {
+        "Repo_Url": "https://github.com/audacious-media-player/audacious-plugins.git",
+        "Last_Check": "{05-Nov-2022}-{21:17:59}",
+        "Current_Commit": "303b74a7e20b7aef3947f08b0282afc9922baf0f"
+    },
+    {
+        "Repo_Url": "https://github.com/pawelswiszcz/Avatar-Gnome-Shell-Extension",
+        "Last_Check": "{05-Nov-2022}-{21:17:59}",
+        "Current_Commit": "63b2ab7d59fecca47aba07786ab25e5489845543"
+    }
+]

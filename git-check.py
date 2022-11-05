@@ -5,13 +5,13 @@
 
 # TODO list / improvement
 # some error management
-# -a : add a git repo entry in filename.csv
+# -a : add a git repo entry in filename.json
 # -r : remove git repo entry passing index e.g  -r 2
 # -s : show repolist with index
 
 import os
 import sys
-import csv
+import json
 import subprocess
 import re
 import datetime
@@ -64,14 +64,13 @@ os.system('clear')
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info while checking git repos')
 parser.add_argument('-c', '--check_only', action='store_true', dest='check_only', help='do not update filename with last commit info')
-parser.add_argument('filename', type=pathlib.Path, help='a csv formatted text file with a list of git repos to check')
+parser.add_argument('jsonfile', type=pathlib.Path, help='a json file with a git repos list to check')
 args = parser.parse_args()
 
 #print('verbose is', args.verbose)
 #print('check_only is', args.check_only)
-#print('filename  is', args.file)
 
-fName=str(args.filename)
+fName=str(args.jsonfile)
 verbose=args.verbose
 checkonly=args.check_only
 
@@ -82,9 +81,11 @@ def orario ():
 def check_repos():
 	# open the file in read mode
 	try:
-		filename = open(fName, 'r', encoding='utf-8')
+		with open(fName, 'r', encoding='utf-8') as filename:
+				#jsonContent = filename.read()
+				lista =json.loads(filename.read()) # populate dict 'lista'
 	except FileNotFoundError as error:
-		print (colors.fg.red + 'Error: '+ colors.reset + 'file [ ' + fName + ' ] not found! Please check filename or path.')
+		print (colors.fg.orange + colors.bold + 'Error: ' + fName.upper() + ' not found!' + colors.reset + ' Please check filename or path.')
 		print (colors.reset)
 		sys.exit()
 
@@ -94,73 +95,57 @@ def check_repos():
 		bName = tempTuple[0] + '.bak'
 		shutil.copyfile(fName, bName)
 
-	# creating dictreader object
-	dictName= csv.DictReader(filename)
-
-	# creating empty lists
-	repoList = []
-	checktime =[]
-	currentCommit = []
-
-	# iterating over each row and append
-	# values to empty list
-	for col in dictName:
-		repoList.append(col['Repo_Name'])
-		checktime.append(col['Last_Check'])
-		currentCommit.append(col['Current_Commit'])
-
-	index = 0
+	# some init variables
 	changed = 0
 	not_changed = 0
 
-	# set header for final list/multiline string to write in the text file
-	all_rows  = ['Repo_Name,Last_Check,Current_Commit'] 
-
-	# some initial statistics
-	print (colors.bold + '❯ Checking ' + str(len(repoList)) + ' remote git repos from file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯ current check time: ' + colors.fg.purple + orario() )
+	# print some initial statistics
+	print (colors.bold + '❯ Checking ' + str(len(lista)) + ' remote git repos from file: ' + colors.fg.purple + fName)
+	print (colors.reset + '❯ current check time: ' + colors.fg.purple + orario())
 	print (colors.reset)
 
 	# check latest commit for each repo using git ls-remote command
-	for repo_url in repoList:
+	for indice, x in enumerate(lista):
+		repo_url = (lista[indice]['Repo_Url'])
+		last_check = (lista[indice]['Last_Check'])
+		current_commit = (lista[indice]['Current_Commit'])
+		# print some initial info:
 		print(colors.reset + '→ retrieving last remote commit id for:')
 		print(colors.fg.blue + '→ ' + repo_url)
-
+		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
-		lastCommit = re.split(r'\t+', stdout.decode('ascii'))[0]
+		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
 		
-		if currentCommit[index] != lastCommit:
+		if current_commit != last_commit:
 			changed += 1
-			print(colors.fg.red + '✔ ...some changes since last check: ' + colors.bold + checktime[index])
+			lista[indice]['Current_Commit'] = last_commit # update commit
+			print(colors.fg.red + '✔ ...some changes since last check: ' + colors.bold + last_check)
 		else:
 			not_changed += 1
-			print(colors.fg.green + '✔ ...no changes since last check: ' + colors.bold + checktime[index])
+			print(colors.fg.green + '✔ ...no changes since last check: ' + colors.bold + last_check)
 		
-		# show commits info
+		# show commits info if -v is passed
 		if verbose :
-			print(colors.reset + '→ stored commit: ' + colors.bold + colors.fg.lightcyan + currentCommit[index])
-			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + lastCommit)
+			print(colors.reset + '→ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
+			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
 
+		# update last_check value with current date/time
+		lista[indice]['Last_Check'] = orario()
 		print (colors.reset)
-		# append rows
-		all_rows.append(repo_url+',' + orario() + ','+lastCommit)
-		index += 1
+		#end loop trought dict dataset
 
 	# close the file after all operations
 	filename.close()
-	# some final statistics
+	# print some final statistics
 	print (colors.reset + '❯ check is over. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
-
-	# update the file unless -c is passed
-	# but, before, convert all_rows list in a multiline string
+	
+	# dump update dict LISTA into the json file unless -c is passed
 	if not checkonly :
-		# join all rows and add a newline at the end of dict
-		result = '\n'.join(all_rows)
-		result = (result + ('\n'))
-		# update the current file
+		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:
-			filename.writelines(result)
+			filename.write(json_write)
+			filename.write("\n")  # Add newline (Python JSON does not)
 			filename.close()
 
 # main program

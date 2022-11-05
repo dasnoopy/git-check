@@ -5,10 +5,10 @@ It use `git ls-remote https:/git...` command.<br />
 I wrote this utility to avoid manually check of every git repo that I compile using AUR PKGBUILD.<br />
 
 ```
-usage: git-check.py [-h] [-v] [-c] filename
+usage: git-check.py [-h] [-v] [-c] jsonfile
 
 positional arguments:
-  filename          a csv formatted text file with a list of git repos to check
+  jsonfile          a json file with a git repos list to check
 
 options:
   -h, --help        show this help message and exit
@@ -17,18 +17,28 @@ options:
 ```
 
 **Note 1:**
-_*filename.csv*_ must be a csv file with header, e.g. : 
+_*jsonfile.json*_ must be a json formatted file, e.g.: 
 
-| Repo_Name | Last_Check | Current_Commit |
-| :---      | :---       | :---          |
-|https://github.com/user/one_project.git|0|0
-|https://gitlab.com/user/another_project.git|0|0
+```
+[
+    {
+        "Repo_Url": "https://github.com/user/software.git",
+        "Last_Check": "0",
+        "Current_Commit": "0"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/World/gnome-sw.git",
+        "Last_Check": "0",
+        "Current_Commit": "0"
+    }
+ ]
+```
 
 **Note 2:**<br />
-When add a new git repo to the file, Last_Check and Current_Commit can be any numeric value.<br />
-These values will be overwritten,with correct info,after first script run unless you use the `--check_only` argument.
+When add a new git repo to the file, Last_Check and Current_Commit keys can be any numeric value.<br />
+These values will be overwritten,with correct data,after first run script unless you use the `--check_only` argument.
 
 **Note 3:**<br />
-A backup copy of then csv file is always created before update the csv file itself. 
+A backup copy of then json file is always created before update the json file itself. 
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

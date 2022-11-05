@@ -1,7 +1,14 @@
 #!/usr/bin/python3
 #
 # git-check by Andrea Antolini
-#
+
+
+# TODO list / improvement
+# some error management
+# -a : add a git repo entry in filename.csv
+# -r : remove git repo entry passing index e.g  -r 2
+# -s : show repolist with index
+
 import os
 import sys
 import csv
@@ -55,7 +62,7 @@ os.system('clear')
 # passing arguments and/or define some variabiles
 # Create the parser
 parser = argparse.ArgumentParser()
-parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info')
+parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info while checking git repos')
 parser.add_argument('-c', '--check_only', action='store_true', dest='check_only', help='do not update filename with last commit info')
 parser.add_argument('filename', type=pathlib.Path, help='a csv formatted text file with a list of git repos to check')
 args = parser.parse_args()
@@ -82,7 +89,7 @@ def check_repos():
 		sys.exit()
 
 	# create a backup of original file unless -c is passed
-	if checkonly == False :
+	if not checkonly :
 		tempTuple = os.path.splitext(fName)
 		bName = tempTuple[0] + '.bak'
 		shutil.copyfile(fName, bName)
@@ -117,7 +124,7 @@ def check_repos():
 	# check latest commit for each repo using git ls-remote command
 	for repo_url in repoList:
 		print(colors.reset + '→ retrieving last remote commit id for:')
-		print(colors.reset + colors.fg.blue + '→ ' + repo_url)
+		print(colors.fg.blue + '→ ' + repo_url)
 
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
@@ -131,7 +138,7 @@ def check_repos():
 			print(colors.fg.green + '✔ ...no changes since last check: ' + colors.bold + checktime[index])
 		
 		# show commits info
-		if verbose == True :
+		if verbose :
 			print(colors.reset + '→ stored commit: ' + colors.bold + colors.fg.lightcyan + currentCommit[index])
 			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + lastCommit)
 
@@ -147,7 +154,7 @@ def check_repos():
 
 	# update the file unless -c is passed
 	# but, before, convert all_rows list in a multiline string
-	if checkonly == False :
+	if not checkonly :
 		# join all rows and add a newline at the end of dict
 		result = '\n'.join(all_rows)
 		result = (result + ('\n'))
@@ -160,6 +167,3 @@ def check_repos():
 if __name__ == '__main__':
 	check_repos()
 	sys.exit()
-
-# TODO list
-# some error management

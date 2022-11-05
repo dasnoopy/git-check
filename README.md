@@ -12,7 +12,7 @@ positional arguments:
 
 options:
   -h, --help        show this help message and exit
-  -v, --verbose     show commits info
+  -v, --verbose     show commits info while checking git repos
   -c, --check_only  do not update filename with last commit info
 ```
 

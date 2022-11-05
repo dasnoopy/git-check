@@ -58,7 +58,6 @@ class colors:
 
 # clean screen 
 os.system('clear')
-
 # passing arguments and/or define some variabiles
 # Create the parser
 parser = argparse.ArgumentParser()
@@ -67,16 +66,13 @@ parser.add_argument('-c', '--check_only', action='store_true', dest='check_only'
 parser.add_argument('jsonfile', type=pathlib.Path, help='a json file with a git repos list to check')
 args = parser.parse_args()
 
-#print('verbose is', args.verbose)
-#print('check_only is', args.check_only)
-
 fName=str(args.jsonfile)
 verbose=args.verbose
 checkonly=args.check_only
 
 # initial checking  time
 def orario ():
-	return datetime.datetime.now().strftime("{%d-%b-%Y}-{%H:%M:%S}")
+	return datetime.datetime.now()#strftime("{%d-%b-%Y}-{%H:%M:%S}")
 
 def check_repos():
 	# open the file in read mode
@@ -98,10 +94,11 @@ def check_repos():
 	# some init variables
 	changed = 0
 	not_changed = 0
+	start_time = orario()
 
 	# print some initial statistics
-	print (colors.bold + '❯ Checking ' + str(len(lista)) + ' remote git repos from file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯ current check time: ' + colors.fg.purple + orario())
+	print (colors.bold + '❯❯ Checking ' + str(len(lista)) + ' remote git repos from file: ' + colors.fg.purple + fName)
+	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + str(start_time))
 	print (colors.reset)
 
 	# check latest commit for each repo using git ls-remote command
@@ -131,16 +128,18 @@ def check_repos():
 			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
 
 		# update last_check value with current date/time
-		lista[indice]['Last_Check'] = orario()
+		lista[indice]['Last_Check'] = str(orario())
 		print (colors.reset)
 		#end loop trought dict dataset
 
 	# close the file after all operations
 	filename.close()
 	# print some final statistics
-	print (colors.reset + '❯ check is over. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
+	stop_time=orario()
+	delta_time=stop_time - start_time
+	print (f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
 	
-	# dump update dict LISTA into the json file unless -c is passed
+	# dump updated dict 'lista' into the json file unless -c is passed
 	if not checkonly :
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:

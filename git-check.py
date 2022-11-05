@@ -107,8 +107,8 @@ def check_repos():
 		last_check = (lista[indice]['Last_Check'])
 		current_commit = (lista[indice]['Current_Commit'])
 		# print some initial info:
-		print(colors.reset + '→ retrieving last remote commit id for:')
-		print(colors.fg.blue + '→ ' + repo_url)
+		print(colors.reset + '➜ retrieving last remote commit id for:')
+		print(colors.fg.blue + '➜ ' + repo_url)
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
@@ -124,8 +124,8 @@ def check_repos():
 		
 		# show commits info if -v is passed
 		if verbose :
-			print(colors.reset + '→ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
-			print(colors.reset + '→ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
+			print(colors.reset + '➜ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
+			print(colors.reset + '➜ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
 
 		# update last_check value with current date/time
 		lista[indice]['Last_Check'] = str(orario())
@@ -138,7 +138,7 @@ def check_repos():
 	stop_time=orario()
 	delta_time=stop_time - start_time
 	print (f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
-	
+
 	# dump updated dict 'lista' into the json file unless -c is passed
 	if not checkonly :
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
@@ -150,4 +150,5 @@ def check_repos():
 # main program
 if __name__ == '__main__':
 	check_repos()
+	print (colors.reset)
 	sys.exit()

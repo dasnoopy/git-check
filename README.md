@@ -8,12 +8,12 @@ I wrote this utility to avoid manually check of every git repo that I compile us
 usage: git-check.py [-h] [-v] [-c] jsonfile
 
 positional arguments:
-  jsonfile          a json file with a git repos list to check
+  jsonfile          a json file with a git repos list to check (a backup copy file is made before update the file itself)
 
 options:
   -h, --help        show this help message and exit
   -v, --verbose     show commits info while checking git repos
-  -c, --check_only  do not update filename with last commit info
+  -c, --check_only  do not update filename (and do not create the backup file) with updated information
 ```
 
 **Note 1:**
@@ -37,8 +37,5 @@ _*jsonfile.json*_ must be a json formatted file, e.g.:
 **Note 2:**<br />
 When add a new git repo to the file, Last_Check and Current_Commit keys can be any numeric value.<br />
 These values will be overwritten,with correct data,after first run script unless you use the `--check_only` argument.
-
-**Note 3:**<br />
-A backup copy of then json file is always created before update the json file itself. 
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

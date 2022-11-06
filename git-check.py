@@ -72,7 +72,7 @@ checkonly=args.check_only
 
 # initial checking  time
 def orario ():
-	return datetime.datetime.now()#strftime("{%d-%b-%Y}-{%H:%M:%S}")
+	return datetime.datetime.now()#.strftime("%d-%b-%Y %H:%M:%S")
 
 def check_repos():
 	# open the file in read mode
@@ -98,7 +98,7 @@ def check_repos():
 
 	# print some initial statistics
 	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + str(start_time))
+	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + start_time.strftime("%d-%b-%Y %H:%M:%S"))
 	print (colors.reset)
 	print (colors.reset + '❯❯ checking for any change since last time:')
 	print (colors.reset)
@@ -132,7 +132,7 @@ def check_repos():
 			print(colors.reset + '    ➜ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
 
 		# update last_check value with current date/time
-		lista[indice]['Last_Check'] = str(orario())
+		lista[indice]['Last_Check'] = orario().strftime("%d-%b-%Y %H:%M:%S")
 		#end loop trought dict dataset
 
 	# close the file after all operations

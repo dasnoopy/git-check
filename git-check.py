@@ -109,7 +109,7 @@ def check_repos():
 		current_commit = (lista[indice]['Current_Commit'])
 		# print some initial info:
 
-		print(colors.reset + '➜ ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
+		print(colors.reset + '➜ ' + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
@@ -118,11 +118,11 @@ def check_repos():
 		if current_commit != last_commit:
 			changed += 1
 			lista[indice]['Current_Commit'] = last_commit # update commit
-			print(colors.reset + '➜ ' + colors.fg.red + repo_url + ' [✘] ')
+			print(colors.reset + '➜ ' + colors.fg.red + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✘] ')
 			#print(colors.fg.red + '✔ ...some changes since last time: ' + colors.bold + last_check)
 		else:
 			not_changed += 1
-			print(colors.reset + '➜ ' + colors.fg.green + repo_url + ' [✔] ')
+			print(colors.reset + '➜ ' + colors.fg.green + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✔] ')
 			#print(colors.fg.green + '✔ ...no changes since last check: ' + colors.bold + last_check)
 		
 		# show commits info if -v is passed

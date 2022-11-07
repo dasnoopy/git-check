@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 #
 # git-check by Andrea Antolini
-
+# written for python 3.10.x
 
 # TODO list / improvement
-# -a : add a git repo entry in filename.json
+# check if url passed is valid
 # -r : remove git repo entry passing index e.g  -r 2
 
 import os
@@ -17,6 +17,8 @@ import argparse
 import pathlib
 import shutil
 import errno
+import secrets
+
 
 class colors:
 	reset = '\033[0m'
@@ -61,30 +63,50 @@ os.system('clear')
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info while checking git repos')
 parser.add_argument('-c', '--check_only', action='store_true', dest='check_only', help='do not update filename with last commit info')
+parser.add_argument('-a', '--add', action='store', dest='add_git_url', help='append git url to the json file')
 parser.add_argument('jsonfile', type=pathlib.Path, help='a json file with a git repos list to check')
 args = parser.parse_args()
 
 fName=str(args.jsonfile)
 verbose=args.verbose
 checkonly=args.check_only
+addurl=args.add_git_url
 
-# initial checking  time
+# check if json file exist
+if not os.path.exists(fName):
+	print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' not found!' + colors.reset + ' Please check filename or path.')
+	print (colors.reset)
+	sys.exit()
+
+# formatted datetime string
 def orario ():
-	return datetime.datetime.now()#.strftime("%d-%b-%Y %H:%M:%S")
+	return datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S")
+
+# function to append to JSON entry (--add url argument)
+def append_json(entry):
+	with open(fName,'r+', encoding='utf-8') as filename:
+		# First we load existing data into a dict.
+		lista = json.load(filename)
+		# append new dict element
+		lista.append(entry)
+		# Sets file's current position at offset.
+		filename.seek(0)
+		# write changes
+		json_write = json.dumps(lista, indent=4, sort_keys=False)
+		
+		with open(fName, 'w', encoding='utf-8') as filename:
+			filename.write(json_write)
+			filename.write("\n")  # Add newline (Python JSON does not)
+			filename.close()
 
 def check_repos():
 	# open the file in read mode
-	try:
-		with open(fName, 'r', encoding='utf-8') as filename:
+	with open(fName, 'r', encoding='utf-8') as filename:
 				#jsonContent = filename.read()
-				lista =json.loads(filename.read()) # populate dict 'lista'
-	except FileNotFoundError as error:
-		print (colors.fg.orange + colors.bold + 'Error: ' + fName.upper() + ' not found!' + colors.reset + ' Please check filename or path.')
-		print (colors.reset)
-		sys.exit()
+				lista =json.load(filename) # populate dict 'lista'
 
 	# create a backup of original file unless -c is passed
-	if not checkonly :
+	if not checkonly:
 		tempTuple = os.path.splitext(fName)
 		bName = tempTuple[0] + '.bak'
 		shutil.copyfile(fName, bName)
@@ -92,13 +114,13 @@ def check_repos():
 	# init some variables
 	changed = 0
 	not_changed = 0
-	start_time = orario()
+	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.bold + '❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯ current check time: ' + colors.fg.purple + start_time.strftime("%d-%b-%Y %H:%M:%S"))
+	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
+	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + orario())
 	print (colors.reset)
-	print (colors.reset + '❯ checking for any change since last time:')
+	print (colors.reset + '❯❯ checking for any change since last time:')
 	print (colors.reset)
 	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):
@@ -114,27 +136,27 @@ def check_repos():
 		if current_commit != last_commit:
 			changed += 1
 			lista[indice]['Current_Commit'] = last_commit # update commit
-			print(colors.reset + '➜ ' + colors.fg.red + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✘] ')
+			print(colors.reset + '➜ ' + colors.fg.lightred + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✘] ')
 		else:
 			not_changed += 1
-			print(colors.reset + '➜ ' + colors.fg.green + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✔] ')
+			print(colors.reset + '➜ ' + colors.fg.lightgreen + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✔] ')
 		
 		# show commits info if -v is passed
-		if verbose :
-			print(colors.reset + '    ➜ last check on: ' + colors.fg.purple + colors.bold + last_check)
-			print(colors.reset + '    ➜ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
-			print(colors.reset + '    ➜ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
+		if verbose:
+			print(colors.reset + '  ➜ last check on: ' + colors.fg.purple + colors.bold + last_check)
+			print(colors.reset + '  ➜ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
+			print(colors.reset + '  ➜ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
 
 		# update last_check value with current date/time
-		lista[indice]['Last_Check'] = orario().strftime("%d-%b-%Y %H:%M:%S")
+		lista[indice]['Last_Check'] = orario()
 		#end loop trought dict dataset
 	# close the file after all operations
 	filename.close()
 	# print some final statistics
-	stop_time=orario()
-	delta_time=stop_time - start_time
+	
+	delta_time=datetime.datetime.now() - start_time
 	print (colors.reset)
-	print (colors.reset + f'❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless -c is passed
 	if not checkonly :
@@ -146,6 +168,16 @@ def check_repos():
 
 # main program
 if __name__ == '__main__':
-	check_repos()
+    # if --add passed...
+	if addurl:
+		new_entry = {"Repo_Url":addurl,
+					"Last_Check": orario(),
+					"Current_Commit": secrets.token_hex(20) # write initial fake commit id
+					}
+		append_json(new_entry)
+		print('❯ ' + colors.fg.green + addurl + colors.reset +' added to ' + colors.fg.purple + fName)
+	else:
+		check_repos()
+	
 	print (colors.reset)
 	sys.exit()

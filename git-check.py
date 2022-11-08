@@ -77,6 +77,11 @@ if not os.path.exists(fName):
 	print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' not found!' + colors.reset + ' Please check filename or path.')
 	print (colors.reset)
 	sys.exit()
+# check if jsno file is zero byte 
+if os.stat(fName).st_size == 0:
+	print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' is empty!' + colors.reset + ' Please pass a valid json file.')
+	print (colors.reset)
+	sys.exit()
 
 # formatted datetime string
 def orario ():
@@ -102,8 +107,12 @@ def append_json(entry):
 def check_repos():
 	# open the file in read mode
 	with open(fName, 'r', encoding='utf-8') as filename:
-				#jsonContent = filename.read()
+			try:
 				lista =json.load(filename) # populate dict 'lista'
+			except json.decoder.JSONDecodeError:
+				print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' is malformed!' + colors.reset + ' Please pass a valid json file.')
+				print (colors.reset)
+				sys.exit()
 
 	# create a backup of original file unless -c is passed
 	if not checkonly:

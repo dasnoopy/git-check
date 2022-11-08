@@ -5,15 +5,17 @@ It use `git ls-remote https:/git...` command.<br />
 I wrote this utility to avoid manually check of every git repo that I compile using AUR PKGBUILD.<br />
 
 ```
-usage: git-check.py [-h] [-v] [-c] jsonfile
+usage: git-check.py [-h] [-v] [-c] [-a ADD_GIT_URL] jsonfile
 
 positional arguments:
-  jsonfile          a json file with a git repos list to check (a backup copy file is made before update the file itself)
+  jsonfile              a json file with a git repos list to check
 
 options:
-  -h, --help        show this help message and exit
-  -v, --verbose     show commits info while checking git repos
-  -c, --check_only  do not update filename (and do not create the backup file) with updated information
+  -h, --help            show this help message and exit
+  -v, --verbose         show commits info while checking git repos
+  -c, --check_only      do not update filename with last commit info
+  -a ADD_GIT_URL, --add ADD_GIT_URL
+
 ```
 
 **Note 1:**
@@ -35,7 +37,7 @@ _*jsonfile.json*_ must be a json formatted file, e.g.:
 ```
 
 **Note 2:**<br />
-When add a new git repo to the file, Last_Check and Current_Commit keys can be any numeric value.<br />
-These values will be overwritten,with correct data,after first run script unless you use the `--check_only` argument.
+When add a new git repo url to the json file, __Current_Commit__ keys have a "fake" id.<br />
+This id will be overwritten with latest commit after first script execution, unless you use the `--check_only` argument.
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

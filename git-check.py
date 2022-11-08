@@ -72,20 +72,14 @@ verbose=args.verbose
 checkonly=args.check_only
 addurl=args.add_git_url
 
-# check if json file exist
-if not os.path.exists(fName):
-	print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' not found!' + colors.reset + ' Please check filename or path.')
-	print (colors.reset)
-	sys.exit()
-# check if jsno file is zero byte 
-if os.stat(fName).st_size == 0:
-	print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' is empty!' + colors.reset + ' Please pass a valid json file.')
-	print (colors.reset)
-	sys.exit()
-
 # formatted datetime string
 def orario ():
 	return datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S")
+
+def show_error(errore):
+	print (colors.fg.red + colors.bold + '❯❯ Error: ' + fName.upper() + errore + colors.reset + ' Please pass as argument a valid json file.')
+	print (colors.reset)
+	sys.exit()
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -110,9 +104,7 @@ def check_repos():
 			try:
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
-				print (colors.fg.orange + colors.bold + '❯❯ Error: ' + fName.upper() + ' is malformed!' + colors.reset + ' Please pass a valid json file.')
-				print (colors.reset)
-				sys.exit()
+				show_error(' malformed!')
 
 	# create a backup of original file unless -c is passed
 	if not checkonly:
@@ -177,6 +169,11 @@ def check_repos():
 
 # main program
 if __name__ == '__main__':
+
+	# check if json file exist
+	if not os.path.exists(fName):
+		show_error(' not found!')
+   
     # if --add passed...
 	if addurl:
 		new_entry = {"Repo_Url":addurl,

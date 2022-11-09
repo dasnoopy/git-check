@@ -5,17 +5,18 @@ It use `git ls-remote https:/git...` command.<br />
 I wrote this utility to avoid manually check of every git repo that I compile using AUR PKGBUILD.<br />
 
 ```
-usage: git-check.py [-h] [-v] [-c] [-a ADD_GIT_URL] jsonfile
+usage: git-check.py [-h] [--verbose] [--check-only] [--list] [--add ADD_GIT_URL] [--remove ENTRY_NUM] jsonfile
 
 positional arguments:
-  jsonfile              a json file with a git repos list to check
+  jsonfile            a json file with a git repos list to check
 
 options:
-  -h, --help            show this help message and exit
-  -v, --verbose         show commits info while checking git repos
-  -c, --check_only      do not update filename with last commit info
-  -a ADD_GIT_URL, --add ADD_GIT_URL
-
+  -h, --help          show this help message and exit
+  --verbose           show commits info while checking git repos
+  --check-only        do not update filename with last commit info
+  --list              show git repos defined in the json file
+  --add ADD_GIT_URL   append a new git url to check in the json file
+  --remove ENTRY_NUM  delete entry nr. xx from the json file
 ```
 
 **Note 1:**

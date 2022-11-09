@@ -72,19 +72,20 @@ def checker(a):
     return num
 
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='Check latest commit passing a list of git repos',
+                                    epilog='Enjoy the program! :)')
 
-parser.add_argument('--verbose', action='store_true', default=False, dest='verbose',
+parser.add_argument('--verbose', action='store_true', dest='verbose', default=False,
 		help='show commits info while checking git repos')
 
-parser.add_argument('--check-only', action='store_true', default=False, dest='check_only',
+parser.add_argument('--check-only', action='store_true', dest='check_only', default=False,
 		help='do not update filename with last commit info')
 
-parser.add_argument('--list', action='store_true', dest='list_urls',
+parser.add_argument('--list', action='store_true', dest='list_urls',default=False,
 		help='show git repos defined in the json file')
 
 parser.add_argument('--add', action='store', dest='add_git_url',
-		help='append a new git url to check in the json file')
+			help='append a new git url to check in the json file')
 
 parser.add_argument('--remove', action='store', dest='entry_num',type=checker,
 	help='delete entry nr. xx from the json file')
@@ -144,7 +145,7 @@ def remove_json(num):
 		lista = json.load(filename)
 		# remove element
 		try:
-			lista.pop(num - 1)
+			lista.pop(num- 1)
 		except (IndexError):
 			print('>> Check entry value : range must be 1 to ' + str(len(lista)))
 			sys.exit()
@@ -231,15 +232,19 @@ if __name__ == '__main__':
 	# check if json file exist
 	if not os.path.exists(fName):
 		show_error(' not found!')
-  
-    # if --add is passed...
-	if addentry:
+#debug info -----------
+	# print(verbose)
+	# print(checkonly)
+	# print(listurls)
+	# print(addentry)
+	# print(delentry)
+#----------------------
+	# parse arguments
+	if listurls:
+		show_list()
+	elif addentry:
 		entry = {"Repo_Url":addentry,	"Last_Check": orario(),	"Current_Commit": secrets.token_hex(20) }
 		append_json(entry)
-	# if --list is passed
-	elif listurls:
-		show_list()
-	# if --remove is passed
 	elif delentry:
 		remove_json(delentry)
 	else:

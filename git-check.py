@@ -63,14 +63,18 @@ os.system('clear')
 parser = argparse.ArgumentParser()
 parser.add_argument('-v', '--verbose', action='store_true', dest='verbose', help='show commits info while checking git repos')
 parser.add_argument('-c', '--check_only', action='store_true', dest='check_only', help='do not update filename with last commit info')
+parser.add_argument('-s', '--show', action='store_true', dest='show_git', help='show git repos from json file')
 parser.add_argument('-a', '--add', action='store', dest='add_git_url', help='append git url to the json file')
+parser.add_argument('-r', '--remove', action='store', dest='del_entry', help='append git url to the json file')
 parser.add_argument('jsonfile', type=pathlib.Path, help='a json file with a git repos list to check')
 args = parser.parse_args()
 
 fName=str(args.jsonfile)
 verbose=args.verbose
 checkonly=args.check_only
+showurl=args.show_git
 addurl=args.add_git_url
+delentry=args.del_entry
 
 # formatted datetime string
 def orario ():
@@ -80,6 +84,16 @@ def show_error(errore):
 	print (colors.fg.red + colors.bold + '❯❯ Error: ' + fName.upper() + errore + colors.reset + ' Please pass as argument a valid json file.')
 	print (colors.reset)
 	sys.exit()
+
+# function to append to JSON entry (--add url argument)
+def show_json():
+	with open(fName,'r+', encoding='utf-8') as filename:
+		# First we load existing data into a dict.
+		lista = json.load(filename)
+		# append new dict element
+		for indice, x in enumerate(lista):
+			print ('➜ ' + str(indice + 1).zfill(2) + ' - ' + lista[indice]['Repo_Url'])
+		filename.close()
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -97,6 +111,23 @@ def append_json(entry):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 			filename.close()
+		print('❯❯ ' + colors.fg.green + addurl + colors.reset +' added to ' + colors.fg.purple + fName)
+
+def remove_json(entrynr):
+	with open(fName,'r+', encoding='utf-8') as filename:
+		# First we load existing data into a dict.
+		lista = json.load(filename)
+		# append new dict element
+		lista.pop(entrynr)
+		# write changes
+		json_write = json.dumps(lista, indent=4, sort_keys=False)
+		with open(fName, 'w', encoding='utf-8') as filename:
+			filename.write(json_write)
+			filename.write("\n")  # Add newline (Python JSON does not)
+			filename.close()
+		print('❯❯ ' + colors.fg.green + addurl + colors.reset +' added to ' + colors.fg.purple + fName)
+
+
 
 def check_repos():
 	# open the file in read mode
@@ -144,9 +175,9 @@ def check_repos():
 		
 		# show commits info if -v is passed
 		if verbose:
-			print(colors.reset + '  ➜ last check on: ' + colors.fg.purple + colors.bold + last_check)
-			print(colors.reset + '  ➜ stored commit: ' + colors.bold + colors.fg.lightcyan + current_commit)
-			print(colors.reset + '  ➜ latest commit: ' + colors.bold + colors.fg.yellow + last_commit)
+			print(colors.reset + '  ➜ last check on: ' + colors.bold + last_check)
+			print(colors.reset + '  ➜ stored commit: ' + colors.bold + current_commit)
+			print(colors.reset + '  ➜ latest commit: ' + colors.bold + last_commit)
 
 		# update last_check value with current date/time
 		lista[indice]['Last_Check'] = orario()
@@ -176,14 +207,12 @@ if __name__ == '__main__':
    
     # if --add passed...
 	if addurl:
-		new_entry = {"Repo_Url":addurl,
-					"Last_Check": orario(),
-					"Current_Commit": secrets.token_hex(20) # write initial fake commit id
-					}
+		new_entry = {"Repo_Url":addurl,	"Last_Check": orario(),	"Current_Commit": secrets.token_hex(20) }
 		append_json(new_entry)
-		print('❯ ' + colors.fg.green + addurl + colors.reset +' added to ' + colors.fg.purple + fName)
+	elif showurl:
+		show_json()
 	else:
 		check_repos()
-	
+
 	print (colors.reset)
 	sys.exit()

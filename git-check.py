@@ -4,8 +4,6 @@
 # written for python 3.10.x
 
 # TODO list / improvement
-# check if url passed is valid
-# better argument management
 
 import os
 import sys
@@ -18,7 +16,6 @@ import pathlib
 import shutil
 import errno
 import secrets
-
 
 class colors:
 	reset = '\033[0m'
@@ -56,22 +53,17 @@ class colors:
 		cyan = '\033[46m'
 		lightgrey = '\033[47m'
 
-# clean screen 
-## os.system('clear')
-print(colors.reset,end='\r')
-
-# passing arguments and/or define some variabiles
-# Create the parser
 # function to convert the input and 
 # check a value or value range
 def checker(a):
     num = int(a)
       
     if num < 1 :
-        raise argparse.ArgumentTypeError('invalid value!!!')
+        raise argparse.ArgumentTypeError('Invalid value!')
     return num
 
-
+# passing arguments and/or define some variabiles
+# Create the parser
 parser = argparse.ArgumentParser(description='Check latest commit passing a list of git repos',
                                     epilog='Enjoy the program! :)')
 
@@ -88,7 +80,7 @@ parser.add_argument('--add', action='store', dest='add_git_url',
 			help='append a new git url to check in the json file')
 
 parser.add_argument('--remove', action='store', dest='entry_num',type=checker,
-	help='delete entry nr. xx from the json file')
+	help='delete entry NUM from the json file')
 
 parser.add_argument('jsonfile', type=pathlib.Path, 
 		help='a json file with a git repos list to check')
@@ -106,9 +98,16 @@ delentry=args.entry_num
 def orario ():
 	return datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S")
 
+def check_for_links(text: str) -> list:
+    """Checks if a given text contains HTTP links.
+    :param text: Any provided text.
+    :type text: str
+    :returns: Search results.
+    """
+    return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
+
 def show_error(errore):
-	print (colors.fg.red + colors.bold + '❯❯ Error: ' + fName.upper() + errore + colors.reset + ' Please check filename or path and try again!')
-	print (colors.reset)
+	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + errore + colors.reset + ' Please verify and try again!')
 	sys.exit()
 
 # function to append to JSON entry (--add url argument)
@@ -137,17 +136,17 @@ def append_json(entry):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 			filename.close()
-		print('❯❯ ' + colors.fg.green + addentry + colors.reset +' added to ' + colors.fg.purple + fName)
+		print('➜ ' + addentry + ', added to ' + colors.fg.purple + fName)
 
-def remove_json(num):
+def remove_json(indice):
 	with open(fName,'r+', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		lista = json.load(filename)
 		# remove element
 		try:
-			lista.pop(num- 1)
+			lista.pop(indice - 1)
 		except (IndexError):
-			print('>> Check entry value : range must be 1 to ' + str(len(lista)))
+			print('❯❯ Please check passed entry value: '+ colors.reset + colors.bold + 'range must be 1 to ' + str(len(lista)) + '...')
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
@@ -155,7 +154,7 @@ def remove_json(num):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 			filename.close()
-		print('❯❯ Entry nr.' + colors.fg.green + str(num) + colors.reset +' removed from to ' + colors.fg.purple + fName)
+		print(colors.reset + colors.bold + '❯❯ Entry nr.' + str(indice) + colors.reset +' removed from to ' + colors.fg.purple + fName)
 
 def check_repos():
 	# open the file in read mode
@@ -229,6 +228,10 @@ def check_repos():
 # main program
 if __name__ == '__main__':
 
+	# clean screen 
+	## os.system('clear')
+	print(colors.reset,end='\r')
+
 	# check if json file exist
 	if not os.path.exists(fName):
 		show_error(' not found!')
@@ -243,8 +246,16 @@ if __name__ == '__main__':
 	if listurls:
 		show_list()
 	elif addentry:
-		entry = {"Repo_Url":addentry,	"Last_Check": orario(),	"Current_Commit": secrets.token_hex(20) }
-		append_json(entry)
+		if check_for_links(addentry):
+			entry = {
+					"Repo_Url":addentry,	
+					"Last_Check": orario(),	
+					"Current_Commit": secrets.token_hex(20)
+					}
+			append_json(entry)
+		else:
+			print (colors.reset + colors.bold + '❯❯ Wrong format of url!' + colors.reset + ' Please verify and try again.')
+			sys.exit()
 	elif delentry:
 		remove_json(delentry)
 	else:

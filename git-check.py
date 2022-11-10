@@ -136,7 +136,7 @@ def append_json(entry):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 			filename.close()
-		print('➜ ' + addentry + ', added to ' + colors.fg.purple + fName)
+		print('❯❯ ' + colors.bold + addentry + colors.reset + ' added to ' + colors.fg.purple + fName)
 
 def remove_json(indice):
 	with open(fName,'r+', encoding='utf-8') as filename:
@@ -261,5 +261,5 @@ if __name__ == '__main__':
 	else:
 		check_repos()
 
-print (colors.reset)
+print(colors.reset,end='\r')
 sys.exit()

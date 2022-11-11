@@ -67,19 +67,19 @@ def checker(a):
 parser = argparse.ArgumentParser(description='Check latest commit passing a list of git repos',
                                     epilog='Enjoy the program! :)')
 
-parser.add_argument('--verbose', action='store_true', dest='verbose', default=False,
+parser.add_argument('-v','--verbose', action='store_true', dest='verbose', default=False,
 		help='show commits info while checking git repos')
 
-parser.add_argument('--check-only', action='store_true', dest='check_only', default=False,
+parser.add_argument('-c','--check-only', action='store_true', dest='check_only', default=False,
 		help='do not update filename with last commit info')
 
-parser.add_argument('--list', action='store_true', dest='list_urls',default=False,
+parser.add_argument('-l','--list', action='store_true', dest='list_urls',default=False,
 		help='show git repos defined in the json file')
 
-parser.add_argument('--add', action='store', dest='add_git_url',
+parser.add_argument('-a','--add', action='store', dest='add_git_url',
 			help='append a new git url to check in the json file')
 
-parser.add_argument('--remove', action='store', dest='entry_num',type=checker,
+parser.add_argument('-r','--remove', action='store', dest='entry_num',type=checker,
 	help='delete entry NUM from the json file')
 
 parser.add_argument('jsonfile', type=pathlib.Path, 
@@ -110,21 +110,27 @@ def show_error(errore):
 	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + errore + colors.reset + ' Please verify and try again!')
 	sys.exit()
 
-# function to append to JSON entry (--add url argument)
+# function to append to JSON entry (--list argument)
 def show_list():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
-		lista = json.load(filename)
+		try:
+			lista =json.load(filename) # populate dict 'lista'
+		except json.decoder.JSONDecodeError:
+			show_error(' malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
-			print ('➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + lista[indice]['Repo_Url'])
+			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + colors.bold + lista[indice]['Repo_Url'])
 		filename.close()
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
 	with open(fName,'r+', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
-		lista = json.load(filename)
+		try:
+			lista =json.load(filename) # populate dict 'lista'
+		except json.decoder.JSONDecodeError:
+			show_error(' malformed or not a json file.')
 		# append new dict element
 		lista.append(entry)
 		# Sets file's current position at offset.
@@ -146,7 +152,7 @@ def remove_json(indice):
 		try:
 			lista.pop(indice - 1)
 		except (IndexError):
-			print('❯❯ Please check passed entry value: '+ colors.reset + colors.bold + 'range must be 1 to ' + str(len(lista)) + '...')
+			print('❯❯ Please check passed entry value: '+ colors.reset + colors.bold + 'range must be from 1 to ' + str(len(lista)) + '...')
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
@@ -162,7 +168,7 @@ def check_repos():
 			try:
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
-				show_error(' malformed!')
+				show_error(' malformed or not a json file.')
 
 	# create a backup of original file unless --check-only is passed
 	if not checkonly:
@@ -178,9 +184,9 @@ def check_repos():
 	# print some initial statistics
 	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
 	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + orario())
-	print (colors.reset)
+	#print (colors.reset)
 	print (colors.reset + '❯❯ checking for any change since last time:')
-	print (colors.reset)
+	#print (colors.reset)
 	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):
 		repo_url = (lista[indice]['Repo_Url'])
@@ -214,8 +220,8 @@ def check_repos():
 	# print some final statistics
 	
 	delta_time=datetime.datetime.now() - start_time
-	print (colors.reset)
-	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.green + str(not_changed) + colors.reset + ' repos not changed.')
+	#print (colors.reset)
+	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -254,7 +260,7 @@ if __name__ == '__main__':
 					}
 			append_json(entry)
 		else:
-			print (colors.reset + colors.bold + '❯❯ Wrong format of url!' + colors.reset + ' Please verify and try again.')
+			print (colors.reset + colors.bold + '❯❯ Wrong url format!' + colors.reset + ' Please verify and try again.')
 			sys.exit()
 	elif delentry:
 		remove_json(delentry)

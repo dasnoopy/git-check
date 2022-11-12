@@ -105,8 +105,8 @@ def check_for_links(text: str) -> list:
     """
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
-def show_error(errore):
-	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + errore + colors.reset + ' Please verify and try again!')
+def show_error(err):
+	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + err + colors.reset + ' Please verify and try again!')
 	sys.exit()
 
 # function to append to JSON entry (--list argument)
@@ -120,7 +120,6 @@ def show_list():
 		# append new dict element
 		for indice, x in enumerate(lista):
 			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + colors.bold + lista[indice]['Repo_Url'])
-		filename.close()
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -136,11 +135,9 @@ def append_json(entry):
 		filename.seek(0)
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
-		
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-			filename.close()
 		print('❯❯ ' + colors.bold + addentry + colors.reset + ' added to ' + colors.fg.purple + fName)
 
 def remove_json(indice):
@@ -158,7 +155,6 @@ def remove_json(indice):
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-			filename.close()
 		print(colors.reset + colors.bold + '❯❯ Entry nr.' + str(indice) + colors.reset +' removed from to ' + colors.fg.purple + fName)
 
 def check_repos():
@@ -183,9 +179,8 @@ def check_repos():
 	# print some initial statistics
 	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
 	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + orario())
-	#print (colors.reset)
 	print (colors.reset + '❯❯ checking for any change since last time:')
-	#print (colors.reset)
+
 	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):
 		repo_url = (lista[indice]['Repo_Url'])
@@ -196,7 +191,7 @@ def check_repos():
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
-		
+
 		if current_commit != last_commit:
 			changed += 1
 			lista[indice]['Current_Commit'] = last_commit # update commit
@@ -204,7 +199,7 @@ def check_repos():
 		else:
 			not_changed += 1
 			print(colors.reset + '➜ ' + colors.fg.lightgreen + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✔] ')
-		
+
 		# show commits info if --verbose is passed
 		if verbose:
 			print(colors.reset + '  ➜ last check on: ' + colors.bold + last_check)
@@ -213,13 +208,10 @@ def check_repos():
 
 		# update last_check value with current date/time
 		lista[indice]['Last_Check'] = orario()
-		#end loop trought dict dataset
-	# close the file after all operations
-	filename.close()
+	#end loop trought dict dataset
+
 	# print some final statistics
-	
 	delta_time=datetime.datetime.now() - start_time
-	#print (colors.reset)
 	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
@@ -228,7 +220,6 @@ def check_repos():
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-			filename.close()
 
 # main program
 if __name__ == '__main__':
@@ -240,13 +231,7 @@ if __name__ == '__main__':
 	# check if json file exist
 	if not os.path.exists(fName):
 		show_error(' not found!')
-#debug info -----------
-	# print(verbose)
-	# print(checkonly)
-	# print(listurls)
-	# print(addentry)
-	# print(delentry)
-#----------------------
+
 	# parse arguments
 	if listurls:
 		show_list()

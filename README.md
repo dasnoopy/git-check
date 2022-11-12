@@ -5,22 +5,27 @@ It use `git ls-remote https:/git...` command.<br />
 I wrote this utility to avoid manual check of every git repo that I install using AUR PKGBUILD.<br />
 
 ```
-usage: git-check.py [-h] [--verbose] [--check-only] [--list] [--add ADD_GIT_URL] [--remove ENTRY_NUM] jsonfile
+$./git-check.py -h
+usage: git-check.py [-h] [-v] [-c] [-l] [-a ADD_GIT_URL] [-r ENTRY_POS] jsonfile
+
+Check latest commits change passing a list of git repos
 
 positional arguments:
-  jsonfile            a json file with a git repos list to check
+  jsonfile              a json file with a git repos list to check
 
 options:
-  -h, --help          show this help message and exit
-  --verbose           show commits info while checking git repos
-  --check-only        do not update filename with last commit info
-  --list              show git repos defined in the json file
-  --add ADD_GIT_URL   append a new git url to check in the json file
-  --remove ENTRY_NUM  delete entry nr. xx from the json file
+  -h, --help            show this help message and exit
+  -v, --verbose         show more info while checking git repos
+  -c, --check-only      do not update json file or create the backup file with updated info
+  -l, --list            numbered list of git repos defined in the json file
+  -a ADD_GIT_URL, --add ADD_GIT_URL
+                        append a new git url entry in the json file
+  -r ENTRY_POS, --remove ENTRY_POS
+                        delete specific numbered entry from the json file
 ```
 
 **Note 1:**
-_*jsonfile.json*_ must be a json formatted file, e.g.: 
+_*jsonfile*_ must be a json formatted file, e.g.: 
 
 ```
 [
@@ -38,7 +43,7 @@ _*jsonfile.json*_ must be a json formatted file, e.g.:
 ```
 
 **Note 2:**<br />
-When add a new git repo url to the json file, __Current_Commit__ keys have a "fake" id.<br />
-This id will be overwritten with latest commit after first script execution, unless you use the `--check-only` argument.
+When add a new git repo url to the json file (--add option), __Current_Commit__ key will have a "fake" commit.<br />
+The key will be overwritten with actual latest commit, after first script execution, unless you pass the `--check-only` option.
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

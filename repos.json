@@ -1,62 +1,62 @@
 [
     {
         "Repo_Url": "https://github.com/lassekongo83/adw-gtk3.git",
-        "Last_Check": "08-Nov-2022 06:57:30",
+        "Last_Check": "12-Nov-2022 06:12:02",
         "Current_Commit": "11fd41a0dd87c217cf5f081cf06c11a984e86afe"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/World/amberol.git",
-        "Last_Check": "08-Nov-2022 06:57:31",
+        "Last_Check": "12-Nov-2022 06:12:04",
         "Current_Commit": "553fede9bc1dec2fd64e98a997b5cb883ede3c7e"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
-        "Last_Check": "08-Nov-2022 06:57:32",
+        "Last_Check": "12-Nov-2022 06:12:05",
         "Current_Commit": "fb53975b607027fee4827ff499d5d8d29a5fd9fe"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/console.git",
-        "Last_Check": "08-Nov-2022 06:57:33",
+        "Last_Check": "12-Nov-2022 06:12:05",
         "Current_Commit": "e6599e4bb11bfbaa237afd1b96faa08640fc9479"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/gnome-text-editor.git",
-        "Last_Check": "08-Nov-2022 06:57:33",
+        "Last_Check": "12-Nov-2022 06:12:06",
         "Current_Commit": "b81a5807a806baf756bcd6b912d5fe3214f087c5"
     },
     {
-        "Repo_Url": "https://github.com/johnfactotum/foliate.git",
-        "Last_Check": "08-Nov-2022 06:57:34",
-        "Current_Commit": "3115d245422747cb1540ef279f10d11d4f666be4"
-    },
-    {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/meld.git",
-        "Last_Check": "08-Nov-2022 06:57:35",
+        "Last_Check": "12-Nov-2022 06:12:07",
         "Current_Commit": "87352ff76f7684cef811169824a878755f22d161"
     },
     {
         "Repo_Url": "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git",
-        "Last_Check": "08-Nov-2022 06:57:35",
-        "Current_Commit": "cce26033eab9ba4128abb4c1eca865323d2c5795"
+        "Last_Check": "12-Nov-2022 06:12:08",
+        "Current_Commit": "ac740f5184716fcc0908ece36f064933ae81ae1b"
     },
     {
         "Repo_Url": "https://github.com/realmazharhussain/gdm-settings.git",
-        "Last_Check": "08-Nov-2022 06:57:35",
-        "Current_Commit": "ef51814f6bb8151f27d3303e30a09d069400b608"
-    },
-    {
-        "Repo_Url": "https://github.com/knuxify/eartag.git",
-        "Last_Check": "08-Nov-2022 06:57:36",
-        "Current_Commit": "c901468bb191b8788d85f77a79174b35ae53516e"
+        "Last_Check": "12-Nov-2022 06:12:08",
+        "Current_Commit": "6a2a5f3d603e8a8ae3c1a94412b62211c58b8b8b"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious",
-        "Last_Check": "08-Nov-2022 06:57:36",
+        "Last_Check": "12-Nov-2022 06:12:09",
         "Current_Commit": "a5afdc2009458f7c3e6f6e2989cf3f211a124891"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious-plugins.git",
-        "Last_Check": "08-Nov-2022 06:57:37",
+        "Last_Check": "12-Nov-2022 06:12:09",
         "Current_Commit": "303b74a7e20b7aef3947f08b0282afc9922baf0f"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/jrahmatzadeh/just-perfection.git",
+        "Last_Check": "12-Nov-2022 06:12:10",
+        "Current_Commit": "717d981924a547f41a2886135285efc159f99dd9"
+    },
+    {
+        "Repo_Url": "https://github.com/icedman/custom-window-controls.git",
+        "Last_Check": "12-Nov-2022 06:17:00",
+        "Current_Commit": "8381e715f3035fe7674f6d0e6db0d48f7d703a1d"
     }
 ]

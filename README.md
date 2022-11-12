@@ -2,7 +2,7 @@
 
 A simple python app that check if remote git repos' list, have new commit since last check.<br />
 It use `git ls-remote https:/git...` command.<br />
-I wrote this utility to avoid manually check of every git repo that I compile using AUR PKGBUILD.<br />
+I wrote this utility to avoid manual check of every git repo that I install using AUR PKGBUILD.<br />
 
 ```
 usage: git-check.py [-h] [--verbose] [--check-only] [--list] [--add ADD_GIT_URL] [--remove ENTRY_NUM] jsonfile
@@ -39,6 +39,6 @@ _*jsonfile.json*_ must be a json formatted file, e.g.:
 
 **Note 2:**<br />
 When add a new git repo url to the json file, __Current_Commit__ keys have a "fake" id.<br />
-This id will be overwritten with latest commit after first script execution, unless you use the `--check_only` argument.
+This id will be overwritten with latest commit after first script execution, unless you use the `--check-only` argument.
 
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

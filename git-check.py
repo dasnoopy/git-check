@@ -163,18 +163,18 @@ def remove_json(indice):
 		print(colors.reset + colors.bold + '❯❯ Entry nr.' + str(indice) + colors.reset +' removed from to ' + colors.fg.purple + fName)
 
 def check_repos():
+	# create a backup of original file unless --check-only is passed
+	if not checkonly:
+		tempTuple = os.path.splitext(fName)
+		bName = tempTuple[0] + '.bak'
+		shutil.copyfile(fName, bName)
+
 	# open the file in read mode
 	with open(fName, 'r', encoding='utf-8') as filename:
 			try:
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
 				show_error(' malformed or not a json file.')
-
-	# create a backup of original file unless --check-only is passed
-	if not checkonly:
-		tempTuple = os.path.splitext(fName)
-		bName = tempTuple[0] + '.bak'
-		shutil.copyfile(fName, bName)
 
 	# init some variables
 	changed = 0
@@ -268,4 +268,4 @@ if __name__ == '__main__':
 		check_repos()
 
 print(colors.reset,end='\r')
-sys.exit()
+sys.exit(0)

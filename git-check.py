@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 #
-# git-check by Andrea Antolini
-# written for python 3.10.x
-
-# TODO list / improvement
+# @author: Andrea Antolini (https://github.com/Dasnoopy)
+# @license: GNU General Public License v3.0
+# @link: https://github.com/dasnoopy/git-check
 
 import os
 import sys
@@ -64,23 +63,23 @@ def checker(a):
 
 # passing arguments and/or define some variabiles
 # Create the parser
-parser = argparse.ArgumentParser(description='Check latest commit passing a list of git repos',
+parser = argparse.ArgumentParser(description='Check latest commits change passing a list of git repos',
                                     epilog='Enjoy the program! :)')
 
 parser.add_argument('-v','--verbose', action='store_true', dest='verbose', default=False,
-		help='show commits info while checking git repos')
+		help='show more info while checking git repos')
 
 parser.add_argument('-c','--check-only', action='store_true', dest='check_only', default=False,
-		help='do not update filename with last commit info')
+		help='do not update json file or create the backup file with updated info')
 
 parser.add_argument('-l','--list', action='store_true', dest='list_urls',default=False,
-		help='show git repos defined in the json file')
+		help='numbered list of git repos defined in the json file')
 
 parser.add_argument('-a','--add', action='store', dest='add_git_url',
-			help='append a new git url to check in the json file')
+			help='append a new git url entry in the json file')
 
-parser.add_argument('-r','--remove', action='store', dest='entry_num',type=checker,
-	help='delete entry NUM from the json file')
+parser.add_argument('-r','--remove', action='store', dest='entry_pos',type=checker,
+	help='delete specific numbered entry from the json file')
 
 parser.add_argument('jsonfile', type=pathlib.Path, 
 		help='a json file with a git repos list to check')
@@ -92,7 +91,7 @@ verbose=args.verbose
 checkonly=args.check_only
 listurls=args.list_urls
 addentry=args.add_git_url
-delentry=args.entry_num
+delentry=args.entry_pos
 
 # formatted datetime string
 def orario ():

@@ -55,27 +55,25 @@ class colors:
 # function to convert the input and 
 # check a value or value range
 def checker(a):
-    num = int(a)
-      
-    if num < 1 :
-        raise argparse.ArgumentTypeError('Invalid value!')
-    return num
+	num = int(a)
+	if num == 0 :
+		raise argparse.ArgumentTypeError('Invalid value!')
+	return num
 
 # passing arguments and/or define some variabiles
 # Create the parser
-parser = argparse.ArgumentParser(description='Check latest commits change passing a list of git repos',
-                                    epilog='Enjoy the program! :)')
+parser = argparse.ArgumentParser()
 
 parser.add_argument('-v','--verbose', action='store_true', dest='verbose', default=False,
 		help='show more info while checking git repos')
 
 parser.add_argument('-c','--check-only', action='store_true', dest='check_only', default=False,
-		help='do not update json file or create the backup file with updated info')
+		help='do not update commit info in the json file and do not create the backup file')
 
-parser.add_argument('-l','--list', action='store_true', dest='list_urls',default=False,
+parser.add_argument('-l','--list', action='store_true', dest='list_repos',default=False,
 		help='numbered list of git repos defined in the json file')
 
-parser.add_argument('-a','--add', action='store', dest='add_git_url',
+parser.add_argument('-a','--add', action='store', dest='add_git',
 			help='append a new git url entry in the json file')
 
 parser.add_argument('-r','--remove', action='store', dest='entry_pos',type=checker,
@@ -89,8 +87,8 @@ args = parser.parse_args()
 fName=str(args.jsonfile)
 verbose=args.verbose
 checkonly=args.check_only
-listurls=args.list_urls
-addentry=args.add_git_url
+listurls=args.list_repos
+addentry=args.add_git
 delentry=args.entry_pos
 
 # formatted datetime string
@@ -105,18 +103,18 @@ def check_for_links(text: str) -> list:
     """
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
-def show_error(err):
+def print_error(err):
 	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + err + colors.reset + ' Please verify and try again!')
 	sys.exit()
 
 # function to append to JSON entry (--list argument)
-def show_list():
+def show_json():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		try:
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
-			show_error(' malformed or not a json file.')
+			print_error(' malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
 			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + colors.bold + lista[indice]['Repo_Url'])
@@ -128,7 +126,7 @@ def append_json(entry):
 		try:
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
-			show_error(' malformed or not a json file.')
+			print_error(' malformed or not a json file.')
 		# append new dict element
 		lista.append(entry)
 		# Sets file's current position at offset.
@@ -169,7 +167,7 @@ def check_repos():
 			try:
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
-				show_error(' malformed or not a json file.')
+				print_error(' malformed or not a json file.')
 
 	# init some variables
 	changed = 0
@@ -178,14 +176,14 @@ def check_repos():
 
 	# print some initial statistics
 	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
+	print (colors.reset + '❯❯ check for changes since last time: ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
 	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + orario())
-	print (colors.reset + '❯❯ checking for any change since last time:')
 
 	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):
-		repo_url = (lista[indice]['Repo_Url'])
-		last_check = (lista[indice]['Last_Check'])
-		current_commit = (lista[indice]['Current_Commit'])
+		repo_url = lista[indice]['Repo_Url']
+		last_check = lista[indice]['Last_Check']
+		current_commit = lista[indice]['Current_Commit']
 		print(colors.reset + '➜ ' + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
@@ -230,11 +228,11 @@ if __name__ == '__main__':
 
 	# check if json file exist
 	if not os.path.exists(fName):
-		show_error(' not found!')
+		print_error(' not found!')
 
 	# parse arguments
 	if listurls:
-		show_list()
+		show_json()
 	elif addentry:
 		if check_for_links(addentry):
 			entry = {

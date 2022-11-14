@@ -175,9 +175,9 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.bold + '❯❯ ' + str(len(lista)) + ' remote git repos found in the file: ' + colors.fg.purple + fName)
-	print (colors.reset + '❯❯ check for changes since last time: ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
-	print (colors.reset + '❯❯ current check time: ' + colors.fg.purple + orario())
+	print (colors.bold + '❯❯ ' + str(len(lista)) +  colors.reset + ' remote git repos found in the file: ' + colors.bold + colors.fg.purple + fName)
+	print (colors.reset + '❯❯ last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
+	print (colors.reset + '❯❯ current time check: ' + colors.bold + colors.fg.purple + orario())
 
 	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):

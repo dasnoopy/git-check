@@ -127,8 +127,17 @@ def append_json(entry):
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' malformed or not a json file.')
-		# append new dict element
-		lista.append(entry)
+		# append new dict element if not already exist
+		# create a temp list of all git urls
+		urllist=[]
+		for indice, x in enumerate(lista):
+			urllist.append(lista[indice]['Repo_Url'])
+		#check if already exist
+		if entry['Repo_Url'] in urllist:
+			print('❯❯ ' + colors.bold + entry['Repo_Url']  + colors.reset + ' already exist in ' + colors.fg.purple + fName)
+			sys.exit()
+		else:
+			lista.append(entry)
 		# Sets file's current position at offset.
 		filename.seek(0)
 		# write changes
@@ -168,14 +177,13 @@ def check_repos():
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
 				print_error(' malformed or not a json file.')
-
 	# init some variables
 	changed = 0
 	not_changed = 0
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.bold + '❯❯ ' + str(len(lista)) +  colors.reset + ' remote git repos found in the file: ' + colors.bold + colors.fg.purple + fName)
+	print (colors.bold + '❯❯ ' + str(len(lista)) +  colors.reset + ' remote git repos found in: ' + colors.bold + colors.fg.purple + fName)
 	print (colors.reset + '❯❯ last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
 	print (colors.reset + '❯❯ current time check: ' + colors.bold + colors.fg.purple + orario())
 

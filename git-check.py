@@ -117,7 +117,7 @@ def show_json():
 			print_error(' malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
-			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + colors.bold + lista[indice]['Repo_Url'])
+			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + lista[indice]['Repo_Url'])
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -132,7 +132,7 @@ def append_json(entry):
 		urllist=[]
 		for indice, x in enumerate(lista):
 			urllist.append(lista[indice]['Repo_Url'])
-		#check if already exist
+		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
 			print('❯❯ ' + colors.bold + entry['Repo_Url']  + colors.reset + ' already exist in ' + colors.fg.purple + fName)
 			sys.exit()

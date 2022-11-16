@@ -117,7 +117,7 @@ def show_json():
 			print_error(' malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
-			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + lista[indice]['Repo_Url'])
+			print (colors.reset + '[' + '{:>3}'.format(str(indice + 1)) + '] ' + colors.fg.lightgreen + lista[indice]['Repo_Url'])
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -192,19 +192,22 @@ def check_repos():
 		repo_url = lista[indice]['Repo_Url']
 		last_check = lista[indice]['Last_Check']
 		current_commit = lista[indice]['Current_Commit']
-		print(colors.reset + '➜ ' + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
+		progress = str(int(100 * (indice + 1) / (len(lista)))) + '%'
+		print(colors.reset + '[' + f"{progress:>4}" + '] ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
+		
+	
 
 		if current_commit != last_commit:
 			changed += 1
 			lista[indice]['Current_Commit'] = last_commit # update commit
-			print(colors.reset + '➜ ' + colors.fg.lightred + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✘] ')
+			print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightred + repo_url + ' [✘] ')
 		else:
 			not_changed += 1
-			print(colors.reset + '➜ ' + colors.fg.lightgreen + str(indice + 1).zfill(2) + ' - ' + repo_url + ' [✔] ')
+			print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightgreen + repo_url + ' [✔] ')
 
 		# show commits info if --verbose is passed
 		if verbose:

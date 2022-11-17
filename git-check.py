@@ -103,9 +103,9 @@ def check_for_links(text: str) -> list:
     """
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
-def print_error(err):
-	print (colors.reset + colors.bold + '❯❯ Error: ' + fName + err + colors.reset + ' Please verify and try again!')
-	sys.exit()
+def print_error(err: str):
+	print (colors.reset + '❯❯ error: ' + colors.fg.red + fName + err + colors.reset + ' Please verify and try again!')
+	sys.exit(1)
 
 # function to append to JSON entry (--list argument)
 def show_json():
@@ -114,7 +114,7 @@ def show_json():
 		try:
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
-			print_error(' malformed or not a json file.')
+			print_error(' is malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
 			print (colors.reset + '[' + '{:>3}'.format(str(indice + 1)) + '] ' + colors.fg.lightgreen + lista[indice]['Repo_Url'])
@@ -126,7 +126,7 @@ def append_json(entry):
 		try:
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
-			print_error(' malformed or not a json file.')
+			print_error(' is malformed or not a json file.')
 		# append new dict element if not already exist
 		# create a temp list of all git urls
 		urllist=[]
@@ -134,7 +134,7 @@ def append_json(entry):
 			urllist.append(lista[indice]['Repo_Url'])
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
-			print('❯❯ ' + colors.bold + entry['Repo_Url']  + colors.reset + ' already exist in ' + colors.fg.purple + fName)
+			print(colors.reset + '❯❯ ' + entry['Repo_Url']  + colors.fg.red + ' already exist in ' + colors.reset + fName)
 			sys.exit()
 		else:
 			lista.append(entry)
@@ -155,28 +155,28 @@ def remove_json(indice):
 		try:
 			lista.pop(indice - 1)
 		except (IndexError):
-			print('❯❯ Please check passed entry value: '+ colors.reset + colors.bold + 'range must be from 1 to ' + str(len(lista)) + '...')
+			print('❯❯ please check passed entry value: '+ colors.reset + colors.fg.red + 'range must be from 1 to ' + str(len(lista)) + '...' + colors.reset)
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print(colors.reset + colors.bold + '❯❯ Entry nr.' + str(indice) + colors.reset +' removed from to ' + colors.fg.purple + fName)
+		print(colors.reset + '❯❯ entry [' + str(indice) + colors.reset +'] removed from to ' + fName)
 
 def check_repos():
-	# create a backup of original file unless --check-only is passed
-	if not checkonly:
-		tempTuple = os.path.splitext(fName)
-		bName = tempTuple[0] + '.bak'
-		shutil.copyfile(fName, bName)
-
 	# open the file in read mode
 	with open(fName, 'r', encoding='utf-8') as filename:
 			try:
+				# create a backup of original file unless --check-only is passed
+				if not checkonly:
+					tempTuple = os.path.splitext(fName)
+					bName = tempTuple[0] + '.bak'
+					shutil.copyfile(fName, bName)
+				# populate list
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
-				print_error(' malformed or not a json file.')
+				print_error(' is malformed or not a json file.')
 	# init some variables
 	changed = 0
 	not_changed = 0
@@ -187,20 +187,19 @@ def check_repos():
 	print (colors.reset + '❯❯ last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
 	print (colors.reset + '❯❯ current time check: ' + colors.bold + colors.fg.purple + orario())
 
-	# check latest commit for each repo using git ls-remote command
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
 		last_check = lista[indice]['Last_Check']
 		current_commit = lista[indice]['Current_Commit']
+
 		progress = str(int(100 * (indice + 1) / (len(lista)))) + '%'
 		print(colors.reset + '[' + f"{progress:>4}" + '] ' + repo_url + ' [ ] ', end='\r') # \r  next print overwrite this output
+
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
 		
-	
-
 		if current_commit != last_commit:
 			changed += 1
 			lista[indice]['Current_Commit'] = last_commit # update commit

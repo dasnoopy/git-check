@@ -200,14 +200,15 @@ def check_repos():
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
-		if last_commit: # if latest commit is not empty git repo should be available then...
+
+		if last_commit: # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update commit
-				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightred + repo_url + ' [✘] ')
+				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.yellow + repo_url + ' [✘] ')
 			else:
 				not_changed += 1
-				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightgreen + repo_url + ' [✔] ')
+				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.green + repo_url + ' [✔] ')
 
 			# show commits info if --verbose is passed
 			if verbose:
@@ -217,14 +218,14 @@ def check_repos():
 
 			# update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
-		else: #if last_commit is empty probably thereis an issue accesing the git repo
+		else: # if last_commit is empty, probably, there is an issue accessing the git repo
 			last_commit = current_commit
 			unavail += 1
 		#end loop trought dict dataset
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (colors.reset + f'[i] check completed in {delta_time.total_seconds()} sec. ' + colors.fg.yellow + str(unavail) + colors.reset + ' errors. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + f'[i] check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(unavail) + colors.reset + ' errors. ' + colors.fg.yellow + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :

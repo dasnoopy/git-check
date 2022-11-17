@@ -1,7 +1,7 @@
 [
     {
         "Repo_Url": "https://github.com/lassekongo83/adw-gtk3.git",
-        "Last_Check": "12-Nov-2022 06:12:02",
+        "Last_Check": "17-Nov-2022 18:55:37",
         "Current_Commit": "11fd41a0dd87c217cf5f081cf06c11a984e86afe"
     },
     {
@@ -31,32 +31,27 @@
     },
     {
         "Repo_Url": "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git",
-        "Last_Check": "12-Nov-2022 06:12:08",
-        "Current_Commit": "ac740f5184716fcc0908ece36f064933ae81ae1b"
+        "Last_Check": "17-Nov-2022 18:55:42",
+        "Current_Commit": "6fe16ea79b3d7f3f01065c75eed2d0ceefcc5bbc"
     },
     {
         "Repo_Url": "https://github.com/realmazharhussain/gdm-settings.git",
-        "Last_Check": "12-Nov-2022 06:12:08",
-        "Current_Commit": "6a2a5f3d603e8a8ae3c1a94412b62211c58b8b8b"
+        "Last_Check": "17-Nov-2022 18:55:42",
+        "Current_Commit": "32c58337c210211c11974678f3a19272a32dfcb7"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious",
-        "Last_Check": "12-Nov-2022 06:12:09",
+        "Last_Check": "17-Nov-2022 18:55:43",
         "Current_Commit": "a5afdc2009458f7c3e6f6e2989cf3f211a124891"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious-plugins.git",
-        "Last_Check": "12-Nov-2022 06:12:09",
+        "Last_Check": "17-Nov-2022 18:55:43",
         "Current_Commit": "303b74a7e20b7aef3947f08b0282afc9922baf0f"
     },
     {
-        "Repo_Url": "https://gitlab.gnome.org/jrahmatzadeh/just-perfection.git",
-        "Last_Check": "12-Nov-2022 06:12:10",
-        "Current_Commit": "717d981924a547f41a2886135285efc159f99dd9"
-    },
-    {
         "Repo_Url": "https://github.com/icedman/custom-window-controls.git",
-        "Last_Check": "12-Nov-2022 06:17:00",
-        "Current_Commit": "8381e715f3035fe7674f6d0e6db0d48f7d703a1d"
+        "Last_Check": "17-Nov-2022 18:55:44",
+        "Current_Commit": "a42616a003dd81d50a2f43910f5abf42df1c9aaf"
     }
 ]

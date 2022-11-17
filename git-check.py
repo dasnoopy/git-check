@@ -104,7 +104,7 @@ def check_for_links(text: str) -> list:
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
 def print_error(err: str):
-	print (colors.reset + '❯❯ error: ' + colors.fg.red + fName + err + colors.reset + ' Please verify and try again!')
+	print (colors.reset + '[e] ' + colors.fg.red + fName + err + colors.reset + ' Please verify and try again...')
 	sys.exit(1)
 
 # function to append to JSON entry (--list argument)
@@ -134,7 +134,7 @@ def append_json(entry):
 			urllist.append(lista[indice]['Repo_Url'])
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
-			print(colors.reset + '❯❯ ' + entry['Repo_Url']  + colors.fg.red + ' already exist in ' + colors.reset + fName)
+			print(colors.reset + '[i] ' + entry['Repo_Url']  + colors.fg.red + ' already exist in ' + colors.reset + fName + '...')
 			sys.exit()
 		else:
 			lista.append(entry)
@@ -145,7 +145,7 @@ def append_json(entry):
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print('❯❯ ' + colors.bold + addentry + colors.reset + ' added to ' + colors.fg.purple + fName)
+		print('[i] ' + colors.bold + addentry + colors.reset + ' added to ' + fName + '...')
 
 def remove_json(indice):
 	with open(fName,'r+', encoding='utf-8') as filename:
@@ -155,14 +155,14 @@ def remove_json(indice):
 		try:
 			lista.pop(indice - 1)
 		except (IndexError):
-			print('❯❯ please check passed entry value: '+ colors.reset + colors.fg.red + 'range must be from 1 to ' + str(len(lista)) + '...' + colors.reset)
+			print('[e] Please check passed entry value: '+ colors.reset + colors.fg.red + 'range must be from 1 to ' + str(len(lista)) + '...' + colors.reset)
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print(colors.reset + '❯❯ entry [' + str(indice) + colors.reset +'] removed from to ' + fName)
+		print(colors.reset + '[i] Entry [' + str(indice) + colors.reset +'] removed from to ' + fName)
 
 def check_repos():
 	# open the file in read mode
@@ -180,12 +180,13 @@ def check_repos():
 	# init some variables
 	changed = 0
 	not_changed = 0
+	unavail = 0
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.bold + '❯❯ ' + str(len(lista)) +  colors.reset + ' remote git repos found in: ' + colors.bold + colors.fg.purple + fName)
-	print (colors.reset + '❯❯ last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
-	print (colors.reset + '❯❯ current time check: ' + colors.bold + colors.fg.purple + orario())
+	print (colors.reset + '[i] ' + str(len(lista)) + ' remote git repos found in: ' + colors.bold + colors.fg.purple + fName)
+	print (colors.reset + '[i] Last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
+	print (colors.reset + '[i] Current time check: ' + colors.bold + colors.fg.purple + orario())
 
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
@@ -199,28 +200,31 @@ def check_repos():
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
-		
-		if current_commit != last_commit:
-			changed += 1
-			lista[indice]['Current_Commit'] = last_commit # update commit
-			print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightred + repo_url + ' [✘] ')
-		else:
-			not_changed += 1
-			print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightgreen + repo_url + ' [✔] ')
+		if last_commit: # if latest commit is not empty git repo should be available then...
+			if current_commit != last_commit:
+				changed += 1
+				lista[indice]['Current_Commit'] = last_commit # update commit
+				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightred + repo_url + ' [✘] ')
+			else:
+				not_changed += 1
+				print(colors.reset + '[' + f"{progress:>4}" + '] ' + colors.fg.lightgreen + repo_url + ' [✔] ')
 
-		# show commits info if --verbose is passed
-		if verbose:
-			print(colors.reset + '  ➜ last check on: ' + colors.bold + last_check)
-			print(colors.reset + '  ➜ stored commit: ' + colors.bold + current_commit)
-			print(colors.reset + '  ➜ latest commit: ' + colors.bold + last_commit)
+			# show commits info if --verbose is passed
+			if verbose:
+				print(colors.reset + '  ➜ last check on: ' + colors.bold + last_check)
+				print(colors.reset + '  ➜ stored commit: ' + colors.bold + current_commit)
+				print(colors.reset + '  ➜ latest commit: ' + colors.bold + last_commit)
 
-		# update last_check value with current date/time
-		lista[indice]['Last_Check'] = orario()
-	#end loop trought dict dataset
+			# update last_check value with current date/time
+			lista[indice]['Last_Check'] = orario()
+		else: #if last_commit is empty probably thereis an issue accesing the git repo
+			last_commit = current_commit
+			unavail += 1
+		#end loop trought dict dataset
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + f'[i] check completed in {delta_time.total_seconds()} sec. ' + colors.fg.yellow + str(unavail) + colors.reset + ' errors. ' + colors.fg.red + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -252,7 +256,7 @@ if __name__ == '__main__':
 					}
 			append_json(entry)
 		else:
-			print (colors.reset + colors.bold + '❯❯ Wrong url format!' + colors.reset + ' Please verify and try again.')
+			print (colors.reset + colors.bold + '[e] Wrong url format!' + colors.reset + ' Please verify and try again.')
 			sys.exit()
 	elif delentry:
 		remove_json(delentry)

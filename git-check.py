@@ -104,7 +104,7 @@ def check_for_links(text: str) -> list:
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
 def print_error(err: str):
-	print (colors.reset + '[e] ' + colors.fg.red + fName + err + colors.reset + ' Please verify and try again...')
+	print (colors.reset + '❯❯ ' + colors.fg.red + fName + err + colors.reset + ' Please verify and try again...')
 	sys.exit(1)
 
 # function to append to JSON entry (--list argument)
@@ -117,7 +117,7 @@ def show_json():
 			print_error(' is malformed or not a json file.')
 		# append new dict element
 		for indice, x in enumerate(lista):
-			print (colors.reset + '[' + '{:>3}'.format(str(indice + 1)) + '] ' + colors.fg.lightgreen + lista[indice]['Repo_Url'])
+			print (colors.reset + '➜ ' + '{:>3}'.format(str(indice + 1)) + ' - ' + colors.fg.green + lista[indice]['Repo_Url'])
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -134,7 +134,7 @@ def append_json(entry):
 			urllist.append(lista[indice]['Repo_Url'])
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
-			print(colors.reset + '[i] ' + entry['Repo_Url']  + colors.fg.red + ' already exist in ' + colors.reset + fName + '...')
+			print(colors.reset + '❯❯ ' + entry['Repo_Url']  + colors.fg.red + ' already exist in ' + colors.reset + fName + '...')
 			sys.exit()
 		else:
 			lista.append(entry)
@@ -145,7 +145,7 @@ def append_json(entry):
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print('[i] ' + colors.bold + addentry + colors.reset + ' added to ' + fName + '...')
+		print('❯❯ ' + colors.bold + addentry + colors.reset + ' added to ' + fName + '...')
 
 def remove_json(indice):
 	with open(fName,'r+', encoding='utf-8') as filename:
@@ -155,14 +155,14 @@ def remove_json(indice):
 		try:
 			lista.pop(indice - 1)
 		except (IndexError):
-			print('[e] Please check passed entry value: '+ colors.reset + colors.fg.red + 'range must be from 1 to ' + str(len(lista)) + '...' + colors.reset)
+			print('❯❯ Please check passed entry value: '+ colors.reset + colors.fg.red + 'range must be from 1 to ' + str(len(lista)) + '...' + colors.reset)
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print(colors.reset + '[i] Entry [' + str(indice) + colors.reset +'] removed from to ' + fName)
+		print(colors.reset + '❯❯ Entry [' + str(indice) + colors.reset +'] removed from to ' + fName)
 
 def check_repos():
 	# open the file in read mode
@@ -184,9 +184,9 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.reset + '[i] ' + str(len(lista)) + ' remote git repos found in: ' + colors.bold + colors.fg.purple + fName)
-	print (colors.reset + '[i] Last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
-	print (colors.reset + '[i] Current time check: ' + colors.bold + colors.fg.purple + orario())
+	print (colors.reset + '❯❯ ' + str(len(lista)) + ' remote git repos found in: ' + colors.bold + colors.fg.purple + fName)
+	print (colors.reset + '❯❯ Last time check   : ' + colors.bold + colors.fg.purple + lista[0]['Last_Check'])
+	print (colors.reset + '❯❯ Current time check: ' + colors.bold + colors.fg.purple + orario())
 
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
@@ -225,7 +225,7 @@ def check_repos():
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (colors.reset + f'[i] check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(unavail) + colors.reset + ' errors. ' + colors.fg.yellow + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds()} sec. ' + colors.fg.red + str(unavail) + colors.reset + ' errors. ' + colors.fg.yellow + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -257,7 +257,7 @@ if __name__ == '__main__':
 					}
 			append_json(entry)
 		else:
-			print (colors.reset + colors.bold + '[e] Wrong url format!' + colors.reset + ' Please verify and try again.')
+			print (colors.reset + '❯❯ ' + colors.bold + 'Wrong url format!' + colors.reset + ' Please verify and try again.')
 			sys.exit()
 	elif delentry:
 		remove_json(delentry)

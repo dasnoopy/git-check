@@ -184,9 +184,9 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (colors.reset + '❯❯ ' + str(len(lista)) + ' remote git repos found in: ' + colors.bold + colors.fg.lightblue + fName)
+	print (colors.reset + '❯❯ ' + str(len(lista)) + ' remote git repos found in: ' + colors.bold + colors.fg.blue + fName)
 	print (colors.reset + '❯❯ Last time check   : ' + colors.bold + colors.fg.lightblue + lista[0]['Last_Check'])
-	print (colors.reset + '❯❯ Current time check: ' + colors.bold + colors.fg.lightblue + orario())
+	print (colors.reset + '❯❯ Current time check: ' + colors.bold + colors.fg.lightcyan + orario())
 
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
@@ -225,7 +225,7 @@ def check_repos():
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (colors.reset + f'❯❯ check completed in {delta_time.total_seconds():.2f} sec. ' + colors.fg.red + str(unavail) + colors.reset + ' errors. ' + colors.fg.yellow + str(changed) + colors.reset + ' repos changed. ' + colors.fg.lightgreen + str(not_changed) + colors.reset + ' repos not changed.')
+	print (colors.reset + f'❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: ' + colors.fg.lightcyan + str(unavail) + colors.reset + ' unavailable. ' + colors.fg.lightblue + str(changed) + colors.reset + ' have changes. ' + colors.fg.blue + str(not_changed) + colors.reset + ' not changed.')
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :

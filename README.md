@@ -46,4 +46,5 @@ _*jsonfile*_ must be a json formatted file, e.g.:
 When add a new git repo url to the json file (--add option), __Current_Commit__ key will have a "fake" commit.<br />
 The key will be overwritten with actual latest commit, after first script execution, unless you pass the `--check-only` option.
 
+**A screenshot:**<br />
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

@@ -162,7 +162,8 @@ def remove_json(indice):
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}")
+		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
+		print (f"{colors.fg.lightgrey}❯❯ Please check updated list (--list) to verify new link position.{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -194,7 +195,7 @@ def check_repos():
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = str(int(100 * (indice + 1) / (len(lista)))) + '%'
-		print (f"{colors.reset}[{progress:>4}] {repo_url} [ ]", end='\r') # \r  next print overwrite this output
+		print (f"{colors.reset}[{progress:>4}] [ ] {repo_url}", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
@@ -205,10 +206,10 @@ def check_repos():
 			if current_commit != last_commit:
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.yellow}{repo_url} [✘]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}[✘] {colors.fg.yellow}{repo_url}")
 			else:
 				not_changed += 1
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.green}{repo_url} [✔]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}[✔] {colors.fg.green}{repo_url}")
 
 			# show commits info if --verbose is passed
 			if verbose:
@@ -225,7 +226,7 @@ def check_repos():
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.lightcyan}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.blue}{str(not_changed)}{colors.reset} not changed.")
+	print (f"{colors.reset}❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :

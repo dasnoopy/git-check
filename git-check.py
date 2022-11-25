@@ -116,6 +116,7 @@ def show_json():
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
 		# append new dict element
+
 		for indice, x in enumerate(lista):
 			print (f"{colors.reset}➜ {'{:>3}'.format(str(indice + 1))} - {colors.fg.green}{lista[indice]['Repo_Url']}")
 
@@ -189,13 +190,18 @@ def check_repos():
 	print (f"{colors.reset}❯❯ Last time check   : {colors.bold}{colors.fg.lightblue}{lista[0]['Last_Check']}")
 	print (f"{colors.reset}❯❯ Current time check: {colors.bold}{colors.fg.lightcyan}{orario()}")
 
+	# find out the maximum len string value of Key 'Repo_Url'
+	# Using max() + len() + list comprehension
+	temp = (sub['Repo_Url'] for sub in lista)
+	maxlen = max(len(element) for element in temp if element is not None)
+
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
 		last_check = lista[indice]['Last_Check']
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = str(int(100 * (indice + 1) / (len(lista)))) + '%'
-		print (f"{colors.reset}[{progress:>4}] [ ] {repo_url}", end='\r') # \r  next print overwrite this output
+		print (f"{colors.reset}[{progress:>4}] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
 		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
@@ -206,16 +212,16 @@ def check_repos():
 			if current_commit != last_commit:
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}[✘] {colors.fg.yellow}{repo_url}")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} {colors.fg.yellow}[✘]")
 			else:
 				not_changed += 1
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}[✔] {colors.fg.green}{repo_url}")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} {colors.fg.green}[✔]")
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}  ➜ last check on: {colors.bold}{last_check}")
-				print (f"{colors.reset}  ➜ stored commit: {colors.bold}{current_commit}")
-				print (f"{colors.reset}  ➜ latest commit: {colors.bold}{last_commit}")
+				print (f"{colors.reset}➜ last check on: {colors.bold}{last_check}")
+				print (f"{colors.reset}➜ stored commit: {colors.bold}{current_commit}")
+				print (f"{colors.reset}➜ latest commit: {colors.bold}{last_commit}")
 
 			# update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
@@ -238,8 +244,8 @@ def check_repos():
 # main program
 if __name__ == '__main__':
 
-	# clean screen 
-	## os.system('clear')
+	# hide cursor while print output strings
+	print('\033[?25l', end="") 
 	print (colors.reset,end='\r')
 
 	# check if json file exist
@@ -264,6 +270,7 @@ if __name__ == '__main__':
 		remove_json(delentry)
 	else:
 		check_repos()
-
+#restore normal output
+print('\033[?25h', end="")
 print (colors.reset,end='\r')
 sys.exit(0)

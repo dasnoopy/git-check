@@ -118,7 +118,7 @@ def show_json():
 		# append new dict element
 
 		for indice, x in enumerate(lista):
-			print (f"{colors.reset}➜ {'{:>3}'.format(str(indice + 1))} - {colors.fg.green}{lista[indice]['Repo_Url']}")
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']}")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -164,7 +164,7 @@ def remove_json(indice):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please check updated list (--list) to verify new link position.{colors.reset}")
+		print (f"{colors.fg.lightgrey}❯❯ Please check updated list (-l or --list) to verify new link position.{colors.reset}")
 
 def check_repos():
 	# open the file in read mode

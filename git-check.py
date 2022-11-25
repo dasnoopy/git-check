@@ -186,11 +186,11 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}❯❯ {str(len(lista))} remote git repos found in: {colors.bold}{colors.fg.blue}{fName}")
+	print (f"{colors.reset}❯❯ {str(len(lista))} remote git repos found in: {colors.bold}{colors.fg.lightblue}{fName}")
 	print (f"{colors.reset}❯❯ Last time check   : {colors.bold}{colors.fg.lightblue}{lista[0]['Last_Check']}")
-	print (f"{colors.reset}❯❯ Current time check: {colors.bold}{colors.fg.lightcyan}{orario()}")
+	print (f"{colors.reset}❯❯ Current time check: {colors.bold}{colors.fg.lightblue}{orario()}")
 
-	# find out the maximum len string value of Key 'Repo_Url'
+	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension
 	temp = (sub['Repo_Url'] for sub in lista)
 	maxlen = max(len(element) for element in temp if element is not None)
@@ -200,7 +200,7 @@ def check_repos():
 		last_check = lista[indice]['Last_Check']
 		current_commit = lista[indice]['Current_Commit']
 
-		progress = str(int(100 * (indice + 1) / (len(lista)))) + '%'
+		progress = str(int(round(100 * (indice + 1) / len(lista)))) + '%'
 		print (f"{colors.reset}[{progress:>4}] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
@@ -270,7 +270,8 @@ if __name__ == '__main__':
 		remove_json(delentry)
 	else:
 		check_repos()
-#restore normal output
+
+#restore normal output then exit
 print('\033[?25h', end="")
 print (colors.reset,end='\r')
 sys.exit(0)

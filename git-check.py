@@ -195,6 +195,7 @@ def check_repos():
 	temp = (sub['Repo_Url'] for sub in lista)
 	maxlen = max(len(element) for element in temp if element is not None)
 
+	#finally check commit changes
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
 		last_check = lista[indice]['Last_Check']
@@ -219,9 +220,9 @@ def check_repos():
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}➜ last check on: {colors.bold}{last_check}")
-				print (f"{colors.reset}➜ stored commit: {colors.bold}{current_commit}")
-				print (f"{colors.reset}➜ latest commit: {colors.bold}{last_commit}")
+				print (f"{colors.reset}➜ last check on: {colors.fg.lightgrey}{last_check}")
+				print (f"{colors.reset}➜ stored commit: {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}➜ latest commit: {colors.fg.lightgrey}{last_commit}")
 
 			# update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()

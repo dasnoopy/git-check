@@ -1,57 +1,68 @@
 [
     {
         "Repo_Url": "https://github.com/lassekongo83/adw-gtk3.git",
-        "Last_Check": "17-Nov-2022 18:55:37",
-        "Current_Commit": "11fd41a0dd87c217cf5f081cf06c11a984e86afe"
-    },
-    {
-        "Repo_Url": "https://gitlab.gnome.org/World/amberol.git",
-        "Last_Check": "12-Nov-2022 06:12:04",
-        "Current_Commit": "553fede9bc1dec2fd64e98a997b5cb883ede3c7e"
-    },
-    {
-        "Repo_Url": "https://gitlab.gnome.org/GNOME/libadwaita.git",
-        "Last_Check": "12-Nov-2022 06:12:05",
-        "Current_Commit": "fb53975b607027fee4827ff499d5d8d29a5fd9fe"
-    },
-    {
-        "Repo_Url": "https://gitlab.gnome.org/GNOME/console.git",
-        "Last_Check": "12-Nov-2022 06:12:05",
-        "Current_Commit": "e6599e4bb11bfbaa237afd1b96faa08640fc9479"
-    },
-    {
-        "Repo_Url": "https://gitlab.gnome.org/GNOME/gnome-text-editor.git",
-        "Last_Check": "12-Nov-2022 06:12:06",
-        "Current_Commit": "b81a5807a806baf756bcd6b912d5fe3214f087c5"
+        "Last_Check": "03-Dec-2022 19:20:32",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "baf87b51caea92b9b01992fb6bb58e6ea440e90d"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/meld.git",
-        "Last_Check": "12-Nov-2022 06:12:07",
-        "Current_Commit": "87352ff76f7684cef811169824a878755f22d161"
+        "Last_Check": "03-Dec-2022 19:20:32",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "e0f35ae3a16be90ce1e623b66b2d5f118f8480e4"
     },
     {
         "Repo_Url": "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git",
-        "Last_Check": "17-Nov-2022 18:55:42",
-        "Current_Commit": "6fe16ea79b3d7f3f01065c75eed2d0ceefcc5bbc"
+        "Last_Check": "03-Dec-2022 19:20:33",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "98a2dc97a6c504b577ff22863624fb124af1cb64"
     },
     {
         "Repo_Url": "https://github.com/realmazharhussain/gdm-settings.git",
-        "Last_Check": "17-Nov-2022 18:55:42",
-        "Current_Commit": "32c58337c210211c11974678f3a19272a32dfcb7"
+        "Last_Check": "03-Dec-2022 19:20:33",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "9c863c5c5aca03eb0bccdc3c99e3accde1b8a3ba"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious",
-        "Last_Check": "17-Nov-2022 18:55:43",
+        "Last_Check": "03-Dec-2022 19:20:34",
+        "Last_Change": "03-Dec-2022 18:31:40",
         "Current_Commit": "a5afdc2009458f7c3e6f6e2989cf3f211a124891"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious-plugins.git",
-        "Last_Check": "17-Nov-2022 18:55:43",
-        "Current_Commit": "303b74a7e20b7aef3947f08b0282afc9922baf0f"
+        "Last_Check": "03-Dec-2022 19:20:34",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "c2442d705a556939f26e504a9dcaf560df615430"
     },
     {
-        "Repo_Url": "https://github.com/icedman/custom-window-controls.git",
-        "Last_Check": "17-Nov-2022 18:55:44",
-        "Current_Commit": "a42616a003dd81d50a2f43910f5abf42df1c9aaf"
+        "Repo_Url": "https://github.com/maoschanz/drawing.git",
+        "Last_Check": "03-Dec-2022 19:20:35",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "8831c8e9df86f605c40acbe5f9ff1321d1d396cf"
+    },
+    {
+        "Repo_Url": "https://github.com/k4zmu2a/SpaceCadetPinball.git",
+        "Last_Check": "03-Dec-2022 19:20:35",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "2162cac9771bb50059f440c50e9a30d982cdd848"
+    },
+    {
+        "Repo_Url": "https://github.com/knuxify/eartag.git",
+        "Last_Check": "03-Dec-2022 19:20:35",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "46583f6d58377bd772f9bce37b9ca7c75351da16"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/World/amberol.git",
+        "Last_Check": "03-Dec-2022 19:20:37",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "553fede9bc1dec2fd64e98a997b5cb883ede3c7e"
+    },
+    {
+        "Repo_Url": "https://gitlab.gnome.org/jrahmatzadeh/just-perfection.git",
+        "Last_Check": "03-Dec-2022 19:20:37",
+        "Last_Change": "03-Dec-2022 18:31:40",
+        "Current_Commit": "6adb3f2d7ed9ec4238510a1328012a191636ccec"
     }
 ]

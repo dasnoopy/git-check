@@ -117,8 +117,13 @@ def show_json():
 			print_error(' is malformed or not a json file.')
 		# append new dict element
 
+		# search for the maximum len string value of 'Repo_Url' key
+		# Using max() + len() + list comprehension
+		temp = (sub['Repo_Url'] for sub in lista)
+		maxlen = max(len(element) for element in temp if element is not None)
+
 		for indice, x in enumerate(lista):
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']}")
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}} {colors.fg.lightgrey}[{lista[indice]['Last_Change']}]")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -164,7 +169,7 @@ def remove_json(indice):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please check updated list (-l or --list) to verify new link position.{colors.reset}")
+		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated repos list..{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -199,6 +204,7 @@ def check_repos():
 	for indice, x in enumerate(lista):
 		repo_url = lista[indice]['Repo_Url']
 		last_check = lista[indice]['Last_Check']
+		last_change = lista[indice]['Last_Change']
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = str(int(round(100 * (indice + 1) / len(lista)))) + '%'
@@ -212,7 +218,8 @@ def check_repos():
 		if last_commit: # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
 				changed += 1
-				lista[indice]['Current_Commit'] = last_commit # update commit
+				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
+				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
 				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} {colors.fg.yellow}[✘]")
 			else:
 				not_changed += 1
@@ -220,11 +227,12 @@ def check_repos():
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}➜ last check on: {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}➜ stored commit: {colors.fg.lightgrey}{current_commit}")
-				print (f"{colors.reset}➜ latest commit: {colors.fg.lightgrey}{last_commit}")
+				print (f"{colors.reset}➜ latest commit check : {colors.fg.lightgrey}{last_check}")
+				print (f"{colors.reset}➜ latest commit change: {colors.fg.lightcyan}{last_change}")
+				print (f"{colors.reset}➜ stored commit       : {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}➜ latest commit       : {colors.fg.lightcyan}{last_commit}")
 
-			# update last_check value with current date/time
+			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
 		else: # if last_commit is empty, probably, there is an issue accessing the git repo
 			last_commit = current_commit
@@ -261,6 +269,7 @@ if __name__ == '__main__':
 			entry = {
 					"Repo_Url":addentry,	
 					"Last_Check": orario(),	
+					"Last_Change": orario(),	
 					"Current_Commit": secrets.token_hex(20)
 					}
 			append_json(entry)

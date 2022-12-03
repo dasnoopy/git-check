@@ -32,11 +32,13 @@ _*jsonfile*_ must be a json formatted file, e.g.:
     {
         "Repo_Url": "https://github.com/user/software.git",
         "Last_Check": "0",
+		"Last_Check": "0",
         "Current_Commit": "0"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/World/gnome-sw.git",
         "Last_Check": "0",
+		"Last_Check": "0"
         "Current_Commit": "0"
     }
  ]

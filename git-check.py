@@ -124,8 +124,8 @@ def show_json():
 
 		for indice, x in enumerate(lista):
 			last_change = datetime.datetime.strptime(lista[indice]['Last_Change'],"%d-%b-%Y %H:%M:%S").date()
-			days = str((datetime.date.today() - last_change).days).rjust(3)
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.green}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.lightgrey} [{days} days ago.]")
+			delta_days = str((datetime.date.today() - last_change).days).rjust(3)
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.lightgrey} [{delta_days} days]")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):

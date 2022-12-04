@@ -64,13 +64,13 @@ def checker(a):
 parser = argparse.ArgumentParser()
 
 parser.add_argument('-v','--verbose', action='store_true', dest='verbose', default=False,
-		help='show more info while checking git repos')
+		help='show more commit info while checking git repos')
 
 parser.add_argument('-c','--check-only', action='store_true', dest='check_only', default=False,
 		help='do not update commit info in the json file and do not create the backup file')
 
 parser.add_argument('-l','--list', action='store_true', dest='list_repos',default=False,
-		help='numbered list of git repos defined in the json file')
+		help='show list of git repos defined in the json file and days since latest commit')
 
 parser.add_argument('-a','--add', action='store', dest='add_git',
 			help='append a new git url entry in the json file')
@@ -128,9 +128,12 @@ def show_json():
 		maxlen = max(len(element) for element in temp if element is not None)
 
 		for indice, x in enumerate(lista):
+			# convert last_change string in datetime var type
 			last_change = datetime.datetime.strptime(lista[indice]['Last_Change'],"%d-%b-%Y %H:%M:%S").date()
+			# calculate day diff and convert back to str
 			delta_days = str((datetime.date.today() - last_change).days).rjust(3)
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.lightgrey} [{delta_days} days]")
+			# print url list and number of days since last commit
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} ➜{delta_days}d")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -198,9 +201,9 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}❯❯ {str(len(lista))} remote git repos found in: {colors.bold}{colors.fg.lightblue}{fName}")
-	print (f"{colors.reset}❯❯ Last time check   : {colors.bold}{colors.fg.lightblue}{lista[0]['Last_Check']}")
-	print (f"{colors.reset}❯❯ Current time check: {colors.bold}{colors.fg.lightblue}{orario()}")
+	print (f"{colors.reset}➜ {str(len(lista))} remote git repos found in: {colors.bold}{colors.fg.lightblue}{fName}")
+	print (f"{colors.reset}➜ Last time check   : {colors.bold}{colors.fg.lightblue}{lista[0]['Last_Check']}")
+	print (f"{colors.reset}➜ Current time check: {colors.bold}{colors.fg.lightblue}{orario()}")
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension
@@ -233,8 +236,8 @@ def check_repos():
 			# show commits info if --verbose is passed
 			if verbose:
 				print (f"{colors.reset}➜ latest commit check : {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}➜ latest commit change: {colors.fg.lightcyan}{last_change}")
 				print (f"{colors.reset}➜ stored commit       : {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}➜ latest commit change: {colors.fg.lightcyan}{last_change}")
 				print (f"{colors.reset}➜ latest commit       : {colors.fg.lightcyan}{last_commit}")
 
 			# always update last_check value with current date/time
@@ -246,7 +249,7 @@ def check_repos():
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
+	print (f"{colors.reset}➜ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -257,7 +260,6 @@ def check_repos():
 
 # main program
 if __name__ == '__main__':
-
 	# hide cursor while print output strings
 	print('\033[?25l', end="") 
 	print (colors.reset,end='\r')

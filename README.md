@@ -27,26 +27,17 @@ options:
 **Note 1:**
 _*jsonfile*_ must be a json formatted file, e.g.: 
 
+**Note 2:**
+Before start using **git-check**, create new empty file with this simple command:
 ```
-[
-    {
-        "Repo_Url": "https://github.com/user/software.git",
-        "Last_Check": "0",
-		"Last_Check": "0",
-        "Current_Commit": "0"
-    },
-    {
-        "Repo_Url": "https://gitlab.gnome.org/World/gnome-sw.git",
-        "Last_Check": "0",
-		"Last_Check": "0"
-        "Current_Commit": "0"
-    }
- ]
+$ echo '[]' > filename.json
 ```
-
-**Note 2:**<br />
-When add a new git repo url to the json file (--add option), __Current_Commit__ key will have a "fake" commit.<br />
-The key will be overwritten with actual latest commit, after first script execution, unless you pass the `--check-only` option.
+ 
+then start to add git url with:
+```
+$ ./git-check filename.json -a https://github.repo.to.check.git
+```
+ 
 
 **A screenshot:**<br />
 ![Screenshot](https://raw.github.com/dasnoopy/git-check/main/screenshot.png)

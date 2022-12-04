@@ -14,7 +14,6 @@ import argparse
 import pathlib
 import shutil
 import errno
-import secrets
 
 class colors:
 	reset = '\033[0m'
@@ -94,6 +93,12 @@ delentry=args.entry_pos
 # formatted datetime string
 def orario ():
 	return datetime.datetime.now().strftime("%d-%b-%Y %H:%M:%S")
+
+def get_last_commit(url):
+# get latest comming with : git ls-remote url
+		process = subprocess.Popen(["git", "ls-remote", url], stdout=subprocess.PIPE)
+		stdout, stderr = process.communicate()
+		return re.split(r'\t+', stdout.decode('ascii'))[0]
 
 def check_for_links(text: str) -> list:
     """Checks if a given text contains HTTP links.
@@ -213,9 +218,7 @@ def check_repos():
 		print (f"{colors.reset}[{progress:>4}] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
-		process = subprocess.Popen(["git", "ls-remote", repo_url], stdout=subprocess.PIPE)
-		stdout, stderr = process.communicate()
-		last_commit = re.split(r'\t+', stdout.decode('ascii'))[0]
+		last_commit = get_last_commit(repo_url)
 
 		if last_commit: # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
@@ -272,7 +275,7 @@ if __name__ == '__main__':
 					"Repo_Url":addentry,	
 					"Last_Check": orario(),	
 					"Last_Change": orario(),	
-					"Current_Commit": secrets.token_hex(20)
+					"Current_Commit": get_last_commit(addentry)
 					}
 			append_json(entry)
 		else:

@@ -112,7 +112,7 @@ def print_error(err: str):
 	print (f"{colors.reset}❯❯ {colors.bold}{fName}{err}{colors.reset} Please verify and try again...")
 	sys.exit(1)
 
-# function to append to JSON entry (--list argument)
+# function to show urls (--list argument)
 def show_json():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
@@ -120,8 +120,6 @@ def show_json():
 			lista =json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
-		# append new dict element
-
 		# search for the maximum len string value of 'Repo_Url' key
 		# Using max() + len() + list comprehension
 		temp = (sub['Repo_Url'] for sub in lista)
@@ -133,7 +131,7 @@ def show_json():
 			# calculate day diff and convert back to str
 			delta_days = str((datetime.date.today() - last_change).days).rjust(3)
 			# print url list and number of days since last commit
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} ➜{delta_days}d")
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} ➜{delta_days}d ago.")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -179,7 +177,7 @@ def remove_json(indice):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated repos list..{colors.reset}")
+		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated urls list..{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -201,9 +199,8 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}➜ {str(len(lista))} remote git repos found in: {colors.bold}{colors.fg.lightblue}{fName}")
-	print (f"{colors.reset}➜ Last time check   : {colors.bold}{colors.fg.lightblue}{lista[0]['Last_Check']}")
-	print (f"{colors.reset}➜ Current time check: {colors.bold}{colors.fg.lightblue}{orario()}")
+	print (f"{colors.reset}➜ {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
+	print (f"{colors.reset}➜ Last / current time check: {colors.bold}{colors.fg.blue}{lista[0]['Last_Check']} / {colors.bold}{colors.fg.lightblue}{orario()}")
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension

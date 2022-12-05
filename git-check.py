@@ -101,11 +101,10 @@ def get_last_commit(url):
 		return re.split(r'\t+', stdout.decode('ascii'))[0]
 
 def check_for_links(text: str) -> list:
-    """Checks if a given text contains HTTP links.
-    :param text: Any provided text.
-    :type text: str
-    :returns: Search results.
-    """
+    # Checks if a given text contains HTTP links.
+    # param text: Any provided text.
+    # type text: str
+    # returns: Search results.
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
 def print_error(err: str):
@@ -256,7 +255,7 @@ def check_repos():
 			filename.write("\n")  # Add newline (Python JSON does not)
 
 # main program
-if __name__ == '__main__':
+def main():
 	# hide cursor while print output strings
 	print('\033[?25l', end="") 
 	print (colors.reset,end='\r')
@@ -285,7 +284,9 @@ if __name__ == '__main__':
 	else:
 		check_repos()
 
-#restore normal output then exit
-print('\033[?25h', end="")
-print (colors.reset,end='\r')
-sys.exit(0)
+if __name__ == '__main__':
+	main()
+	#restore normal output then exit
+	print('\033[?25h', end="")
+	print (colors.reset,end='\r')
+	sys.exit(0)

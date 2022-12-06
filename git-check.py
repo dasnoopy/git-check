@@ -128,10 +128,12 @@ def show_json():
 			# convert last_change string in datetime var type
 			last_change = datetime.datetime.strptime(lista[indice]['Last_Change'],"%d-%b-%Y %H:%M:%S").date()
 			# calculate day diff and convert back to str
-			delta_days = str((datetime.date.today() - last_change).days).rjust(3)
+			delta_days = int(str((datetime.date.today() - last_change).days))
 			# print url list and number of days since last commit
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} [{delta_days}d]")
-
+			if delta_days >= 30:
+				print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.yellow}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.orange} [{delta_days:>3}d]")
+			else:
+				print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} [{delta_days:>3}d]")
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
 	with open(fName,'r+', encoding='utf-8') as filename:

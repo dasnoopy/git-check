@@ -130,10 +130,12 @@ def show_json():
 			# calculate day diff and convert back to str
 			delta_days = int(str((datetime.date.today() - last_change).days))
 			# print url list and number of days since last commit
-			if delta_days >= 30:
-				print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.yellow}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.orange} [{delta_days:>3}d]")
+			if delta_days <= 30:
+				color=colors.fg.lightgrey				
 			else:
-				print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {colors.fg.lightgreen}{lista[indice]['Repo_Url']:<{maxlen}}{colors.fg.green} [{delta_days:>3}d]")
+				color=colors.fg.lightred
+			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
+
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
 	with open(fName,'r+', encoding='utf-8') as filename:
@@ -292,3 +294,4 @@ if __name__ == '__main__':
 	print('\033[?25h', end="")
 	print (colors.reset,end='\r')
 	sys.exit(0)
+	

@@ -225,13 +225,14 @@ def check_repos():
 
 		if last_commit: # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
+				# change occurred...
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} [!]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} [+]")
 			else:
-				not_changed += 1
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} [x]")
+				# nothing changed ..
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} [=]")
 
 			# show commits info if --verbose is passed
 			if verbose:
@@ -248,6 +249,7 @@ def check_repos():
 		#end loop trought dict dataset
 
 	# print some final statistics
+	not_changed = len(lista) - changed
 	delta_time=datetime.datetime.now() - start_time
 	print (f"{colors.reset}❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
 
@@ -290,7 +292,7 @@ def main():
 
 if __name__ == '__main__':
 	main()
-	#restore normal output then exit
+	# show cursor again and restore normal output. Then exit
 	print('\033[?25h', end="")
 	print (colors.reset,end='\r')
 	sys.exit(0)

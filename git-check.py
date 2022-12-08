@@ -202,8 +202,8 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}➜ {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
-	print (f"{colors.reset}➜ Last / current time check: {colors.bold}{colors.fg.blue}{lista[0]['Last_Check']} / {colors.bold}{colors.fg.lightblue}{orario()}")
+	print (f"{colors.reset}❯❯  {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
+	print (f"{colors.reset}❯❯ Last / current time check: {colors.bold}{colors.fg.blue}{lista[0]['Last_Check']} / {colors.bold}{colors.fg.lightblue}{orario()}")
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension
@@ -228,17 +228,17 @@ def check_repos():
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} {colors.fg.yellow}[✘]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} {colors.fg.yellow}[!]")
 			else:
 				not_changed += 1
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} {colors.fg.green}[✔]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} {colors.fg.green}[x]")
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}➜ latest commit check : {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}➜ stored commit       : {colors.fg.lightgrey}{current_commit}")
-				print (f"{colors.reset}➜ latest commit change: {colors.fg.lightcyan}{last_change}")
-				print (f"{colors.reset}➜ latest commit       : {colors.fg.lightcyan}{last_commit}")
+				print (f"{colors.reset}- latest commit check : {colors.fg.lightgrey}{last_check}")
+				print (f"{colors.reset}- stored commit       : {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}- latest commit change: {colors.fg.lightcyan}{last_change}")
+				print (f"{colors.reset}- latest commit       : {colors.fg.lightcyan}{last_commit}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
@@ -249,7 +249,7 @@ def check_repos():
 
 	# print some final statistics
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}➜ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
+	print (f"{colors.reset}❯❯ remote git repos check done in {delta_time.total_seconds():.2f}s: {colors.fg.blue}{str(unavail)}{colors.reset} unavailable. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed.")
 
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -294,4 +294,3 @@ if __name__ == '__main__':
 	print('\033[?25h', end="")
 	print (colors.reset,end='\r')
 	sys.exit(0)
-	

@@ -24,7 +24,7 @@ options:
 _*jsonfile*_ must be a json formatted file, e.g.: 
 
 **Note 2:**
-Before start using **git-check**, create new empty file with this simple command:
+Before start using **git-check**, create new empty json file with this simple command:
 ```
 $ echo '[]' > filename.json
 ```

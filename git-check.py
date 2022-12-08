@@ -202,7 +202,7 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}❯❯  {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
+	print (f"{colors.reset}❯❯ {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
 	print (f"{colors.reset}❯❯ Last / current time check: {colors.bold}{colors.fg.blue}{lista[0]['Last_Check']} / {colors.bold}{colors.fg.lightblue}{orario()}")
 
 	# search for the maximum len string value of 'Repo_Url' key
@@ -228,10 +228,10 @@ def check_repos():
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} {colors.fg.yellow}[!]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} [!]")
 			else:
 				not_changed += 1
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} {colors.fg.green}[x]")
+				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} [x]")
 
 			# show commits info if --verbose is passed
 			if verbose:

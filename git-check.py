@@ -157,7 +157,7 @@ def show_json():
 			if delta_days <= 30:
 				color=colors.fg.lightgrey				
 			else:
-				color=colors.fg.lightred
+				color=colors.fg.yellow
 			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
@@ -231,8 +231,7 @@ def check_repos():
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension
-	temp = (sub['Repo_Url'] for sub in lista)
-	maxlen = max(len(element) for element in temp if element is not None)
+	maxlen = max(len(element) for element in (sub['Repo_Url'] for sub in lista) if element is not None)
 
 	#finally check commit changes
 	for indice, x in enumerate(lista):
@@ -241,8 +240,8 @@ def check_repos():
 		last_change = lista[indice]['Last_Change']
 		current_commit = lista[indice]['Current_Commit']
 
-		progress = str(int(round(100 * (indice + 1) / len(lista)))) + '%'
-		print (f"{colors.reset}[{progress:>4}] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
+		progress = round(100 * (indice + 1) / len(lista))
+		print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} ", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
@@ -253,17 +252,17 @@ def check_repos():
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.orange}{repo_url:<{maxlen}} [+]")
+				print (f"{colors.reset}[{progress:>3}%] {colors.fg.yellow}{repo_url:<{maxlen}}{colors.bold} ✘")
 			else:
 				# nothing changed ..
-				print (f"{colors.reset}[{progress:>4}] {colors.fg.lightgreen}{repo_url:<{maxlen}} [=]")
+				print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} ✔")
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}- latest commit check : {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}- stored commit       : {colors.fg.lightgrey}{current_commit}")
-				print (f"{colors.reset}- latest commit change: {colors.fg.lightcyan}{last_change}")
-				print (f"{colors.reset}- latest commit       : {colors.fg.lightcyan}{last_commit}")
+				print (f"{colors.reset}- stored commit     : {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}- stored commit date: {colors.fg.lightgrey}{last_check}")
+				print (f"{colors.reset}- latest commit     : {colors.fg.lightcyan}{last_commit}")
+				print (f"{colors.reset}- latest commit date: {colors.fg.lightcyan}{last_change}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()

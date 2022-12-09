@@ -5,7 +5,7 @@ It use `git ls-remote https:/git...` command.<br />
 
 ```
 $./git-check.py repos.json -h
-usage: git-check.py [-h] [-v] [-c] [-l] [-a ADD_GIT] [-r ENTRY_POS] jsonfile
+usage: git-check.py [-h] [-v] [-c] [-l] [-s] [-a ADD_GIT] [-r ENTRY_POS] jsonfile
 
 positional arguments:
   jsonfile              a json file with a git repos list to check
@@ -15,6 +15,7 @@ options:
   -v, --verbose         show more commit info while checking git repos
   -c, --check-only      do not update commit info in the json file and do not create the backup file
   -l, --list            show list of git repos defined in the json file and days since latest commit
+  -s, --sort            sort json objects by last change date key (ascending order) and update the json file
   -a ADD_GIT, --add ADD_GIT
                         append a new git url entry in the json file
   -r ENTRY_POS, --remove ENTRY_POS

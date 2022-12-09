@@ -69,8 +69,11 @@ parser.add_argument('-v','--verbose', action='store_true', dest='verbose', defau
 parser.add_argument('-c','--check-only', action='store_true', dest='check_only', default=False,
 		help='do not update commit info in the json file and do not create the backup file')
 
-parser.add_argument('-l','--list', action='store_true', dest='list_repos',default=False,
+parser.add_argument('-l','--list', action='store_true', dest='list_repos', default=False,
 		help='show list of git repos defined in the json file and days since latest commit')
+
+parser.add_argument('-s','--sort', action='store_true', dest='sort_git', default=False,
+			help='sort json objects by last change date key (ascending order) and update the json file')
 
 parser.add_argument('-a','--add', action='store', dest='add_git',
 			help='append a new git url entry in the json file')
@@ -89,6 +92,7 @@ checkonly=args.check_only
 listurls=args.list_repos
 addentry=args.add_git
 delentry=args.entry_pos
+sortObj=args.sort_git
 
 # formatted datetime string
 def orario ():
@@ -111,7 +115,27 @@ def print_error(err: str):
 	print (f"{colors.reset}❯❯ {colors.bold}{fName}{err}{colors.reset} Please verify and try again...")
 	sys.exit(1)
 
-# function to show urls (--list argument)
+# function to sort jsno wntries by url key (-s, --sort argument)
+def sort_json():
+	with open(fName,'r', encoding='utf-8') as filename:
+		# First we load existing data into a dict.
+		try:
+			lista =json.load(filename) # populate dict 'lista'
+		except json.decoder.JSONDecodeError:
+			print_error(' is malformed or not a json file.')
+
+		# sort list by Repo_Url key
+		#sortedLista = sorted(lista, key=lambda k: k['Repo_Url'], reverse=False)
+		# sort list by Last_Change key
+		sortedLista = sorted(lista, key=lambda k: datetime.datetime.strptime(k['Last_Change'], '%d-%b-%Y %H:%M:%S'), reverse=True)
+
+		json_write = json.dumps(sortedLista, indent=4, sort_keys=False)
+		with open(fName, 'w', encoding='utf-8') as filename:
+			filename.write(json_write)
+			filename.write("\n")  # Add newline (Python JSON does not)
+
+
+# function to show urls (-l, --list argument)
 def show_json():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
@@ -126,7 +150,7 @@ def show_json():
 
 		for indice, x in enumerate(lista):
 			# convert last_change string in datetime var type
-			last_change = datetime.datetime.strptime(lista[indice]['Last_Change'],"%d-%b-%Y %H:%M:%S").date()
+			last_change = datetime.datetime.strptime(lista[indice]['Last_Change'],'%d-%b-%Y %H:%M:%S').date()
 			# calculate day diff and convert back to str
 			delta_days = int(str((datetime.date.today() - last_change).days))
 			# print url list and number of days since last commit
@@ -287,6 +311,8 @@ def main():
 			sys.exit()
 	elif delentry:
 		remove_json(delentry)
+	elif sortObj:
+		sort_json()
 	else:
 		check_repos()
 

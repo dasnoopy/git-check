@@ -145,8 +145,7 @@ def show_json():
 			print_error(' is malformed or not a json file.')
 		# search for the maximum len string value of 'Repo_Url' key
 		# Using max() + len() + list comprehension
-		temp = (sub['Repo_Url'] for sub in lista)
-		maxlen = max(len(element) for element in temp if element is not None)
+		maxlen = max(len(element) for element in (sub['Repo_Url'] for sub in lista) if element is not None)
 
 		for indice, x in enumerate(lista):
 			# convert last_change string in datetime var type
@@ -158,7 +157,7 @@ def show_json():
 				color=colors.fg.lightgrey				
 			else:
 				color=colors.fg.yellow
-			print (f"{colors.reset}[{'{:>3}'.format(str(indice + 1))}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
+			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):

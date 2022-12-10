@@ -226,7 +226,7 @@ def check_repos():
 
 	# print some initial statistics
 	print (f"{colors.reset}❯❯ {str(len(lista))} remote git repos found in: {colors.bold}{fName}")
-	print (f"{colors.reset}❯❯ Last / current time check: {colors.bold}{colors.fg.blue}{lista[0]['Last_Check']} / {colors.bold}{colors.fg.lightblue}{orario()}")
+	print (f"{colors.reset}❯❯ Last check on: {colors.reset}{colors.bold}{lista[0]['Last_Check']}")
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension

@@ -156,7 +156,7 @@ def show_json():
 			if delta_days <= 30:
 				color=colors.fg.lightgrey				
 			else:
-				color=colors.fg.yellow
+				color=colors.bold
 			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
@@ -174,7 +174,7 @@ def append_json(entry):
 			urllist.append(lista[indice]['Repo_Url'])
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
-			print (f"{colors.reset}❯❯ {entry['Repo_Url']}{colors.fg.red} already exist in {colors.reset}{fName}...")
+			print (f"{colors.reset}❯❯ {entry['Repo_Url']}{colors.bold} already exists in {colors.reset}{fName}...")
 			sys.exit()
 		else:
 			lista.append(entry)
@@ -240,7 +240,7 @@ def check_repos():
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = round(100 * (indice + 1) / len(lista))
-		print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} ", end='\r') # \r  next print overwrite this output
+		print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
@@ -251,10 +251,10 @@ def check_repos():
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>3}%] {colors.fg.yellow}{repo_url:<{maxlen}}{colors.bold} ✘")
+				print (f"{colors.reset}[{progress:>3}%] {colors.fg.yellow}{repo_url:<{maxlen}}{colors.bold} [✘]")
 			else:
 				# nothing changed ..
-				print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} ✔")
+				print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} [✔]")
 
 			# show commits info if --verbose is passed
 			if verbose:

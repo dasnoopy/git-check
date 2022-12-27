@@ -153,10 +153,12 @@ def show_json():
 			# calculate day diff and convert back to str
 			delta_days = int(str((datetime.date.today() - last_change).days))
 			# print url list and number of days since last commit
-			if delta_days <= 30:
-				color=colors.fg.lightgrey				
+			if delta_days >= 30:
+				color=colors.fg.red				
+			elif delta_days >= 15:
+				color=colors.fg.yellow
 			else:
-				color=colors.bold
+				color=colors.fg.lightgrey
 			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
@@ -258,10 +260,10 @@ def check_repos():
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}- stored commit     : {colors.fg.lightgrey}{current_commit}")
+				print (f"{colors.reset}- stored commit     : {colors.fg.lightcyan}{current_commit}")
 				print (f"{colors.reset}- stored commit date: {colors.fg.lightgrey}{last_check}")
 				print (f"{colors.reset}- latest commit     : {colors.fg.lightcyan}{last_commit}")
-				print (f"{colors.reset}- latest commit date: {colors.fg.lightcyan}{last_change}")
+				print (f"{colors.reset}- latest commit date: {colors.fg.lightgrey}{last_change}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()

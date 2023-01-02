@@ -134,7 +134,6 @@ def sort_json():
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 
-
 # function to show urls (-l, --list argument)
 def show_json():
 	with open(fName,'r', encoding='utf-8') as filename:
@@ -275,9 +274,7 @@ def check_repos():
 	# print some final statistics
 	not_changed = len(lista) - changed
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}❯❯ remote git repos check completed in {delta_time.total_seconds():.2f}s.")
-	if verbose:
-		print (f"{colors.reset}❯❯ {colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.blue}{str(unavail)}{colors.reset} unavailable.")
+	print (f"{colors.reset}❯❯ Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.blue}{str(unavail)}{colors.reset} unavailable.")
 	
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :

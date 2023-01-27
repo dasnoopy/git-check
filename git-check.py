@@ -158,7 +158,7 @@ def show_json():
 				color=colors.fg.yellow
 			else:
 				color=colors.fg.lightgrey
-			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} [{delta_days:>3}d]")
+			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} {colors.bold}[{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
@@ -285,7 +285,7 @@ def check_repos():
 
 # main program
 def main():
-	# hide cursor while print output strings
+	# hide cursor while show output messages
 	print('\033[?25l', end="") 
 	print (colors.reset,end='\r')
 
@@ -314,10 +314,11 @@ def main():
 		sort_json()
 	else:
 		check_repos()
-
-if __name__ == '__main__':
-	main()
-	# show cursor again and restore normal output. Then exit
+	
+	# show cursor again and restore normal output. Then exit	
 	print('\033[?25h', end="")
 	print (colors.reset,end='\r')
 	sys.exit(0)
+
+if __name__ == '__main__':
+	main()

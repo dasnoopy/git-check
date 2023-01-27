@@ -1,68 +1,68 @@
 [
     {
         "Repo_Url": "https://github.com/lassekongo83/adw-gtk3.git",
-        "Last_Check": "03-Dec-2022 19:20:32",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "baf87b51caea92b9b01992fb6bb58e6ea440e90d"
+        "Last_Check": "02-Jan-2023 18:55:08",
+        "Last_Change": "02-Jan-2023 18:55:08",
+        "Current_Commit": "071f645b5c1ea8c7c794ab70c014298ee0aaf5ce"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/GNOME/meld.git",
-        "Last_Check": "03-Dec-2022 19:20:32",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "e0f35ae3a16be90ce1e623b66b2d5f118f8480e4"
+        "Last_Check": "02-Jan-2023 18:55:09",
+        "Last_Change": "02-Jan-2023 18:55:09",
+        "Current_Commit": "b39640c2701fd3759b6969e0107597ba9b97ca81"
     },
     {
         "Repo_Url": "https://github.com/PapirusDevelopmentTeam/papirus-icon-theme.git",
-        "Last_Check": "03-Dec-2022 19:20:33",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "98a2dc97a6c504b577ff22863624fb124af1cb64"
+        "Last_Check": "02-Jan-2023 18:55:09",
+        "Last_Change": "02-Jan-2023 18:55:09",
+        "Current_Commit": "2a429209f15ef7ae1018c4ea6de9b52d01d8a38c"
     },
     {
         "Repo_Url": "https://github.com/realmazharhussain/gdm-settings.git",
-        "Last_Check": "03-Dec-2022 19:20:33",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "9c863c5c5aca03eb0bccdc3c99e3accde1b8a3ba"
+        "Last_Check": "02-Jan-2023 18:55:09",
+        "Last_Change": "02-Jan-2023 18:55:09",
+        "Current_Commit": "1434434f72109aed105b56330f0a882d84f55395"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious",
-        "Last_Check": "03-Dec-2022 19:20:34",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "a5afdc2009458f7c3e6f6e2989cf3f211a124891"
+        "Last_Check": "02-Jan-2023 18:55:10",
+        "Last_Change": "02-Jan-2023 18:55:10",
+        "Current_Commit": "96a386b61f30757c0763a6ad203d75a6654a43b5"
     },
     {
         "Repo_Url": "https://github.com/audacious-media-player/audacious-plugins.git",
-        "Last_Check": "03-Dec-2022 19:20:34",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "c2442d705a556939f26e504a9dcaf560df615430"
+        "Last_Check": "02-Jan-2023 18:55:11",
+        "Last_Change": "02-Jan-2023 18:55:11",
+        "Current_Commit": "f5a2bfcbb2c0b931b6ac7ae09633a5d0efeea6d6"
     },
     {
         "Repo_Url": "https://github.com/maoschanz/drawing.git",
-        "Last_Check": "03-Dec-2022 19:20:35",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "8831c8e9df86f605c40acbe5f9ff1321d1d396cf"
+        "Last_Check": "02-Jan-2023 18:55:11",
+        "Last_Change": "02-Jan-2023 18:55:11",
+        "Current_Commit": "e4dd458498c137e20a0bb1e39f6c13dd83466e2c"
     },
     {
         "Repo_Url": "https://github.com/k4zmu2a/SpaceCadetPinball.git",
-        "Last_Check": "03-Dec-2022 19:20:35",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "2162cac9771bb50059f440c50e9a30d982cdd848"
+        "Last_Check": "02-Jan-2023 18:55:11",
+        "Last_Change": "02-Jan-2023 18:55:11",
+        "Current_Commit": "2d6f2c14e5992b9ae1e31bfab8ae6adbb061deee"
     },
     {
         "Repo_Url": "https://github.com/knuxify/eartag.git",
-        "Last_Check": "03-Dec-2022 19:20:35",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "46583f6d58377bd772f9bce37b9ca7c75351da16"
+        "Last_Check": "02-Jan-2023 18:55:12",
+        "Last_Change": "02-Jan-2023 18:55:12",
+        "Current_Commit": "62f2e1e7112faed1dbc3330180fc3d4917b5d8be"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/World/amberol.git",
-        "Last_Check": "03-Dec-2022 19:20:37",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "553fede9bc1dec2fd64e98a997b5cb883ede3c7e"
+        "Last_Check": "02-Jan-2023 18:55:13",
+        "Last_Change": "02-Jan-2023 18:55:13",
+        "Current_Commit": "289d0f506349b8937e94cfce56e71e0f1376320b"
     },
     {
         "Repo_Url": "https://gitlab.gnome.org/jrahmatzadeh/just-perfection.git",
-        "Last_Check": "03-Dec-2022 19:20:37",
-        "Last_Change": "03-Dec-2022 18:31:40",
-        "Current_Commit": "6adb3f2d7ed9ec4238510a1328012a191636ccec"
+        "Last_Check": "02-Jan-2023 18:55:13",
+        "Last_Change": "02-Jan-2023 18:55:13",
+        "Current_Commit": "19c5b086d09cda73b24ff5df8d614f7bff9253f8"
     }
 ]

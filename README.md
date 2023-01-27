@@ -21,11 +21,8 @@ options:
   -r ENTRY_POS, --remove ENTRY_POS
 ```
 
-**Note 1:**
-_*jsonfile*_ must be a json formatted file, e.g.: 
-
-**Note 2:**
-Before start using **git-check**, create new empty json file with this simple command:
+**Note:**
+before start using **git-check**, create a new json file, e.g., from command shell with:
 ```
 $ echo '[]' > filename.json
 ```

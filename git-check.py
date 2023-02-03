@@ -246,7 +246,7 @@ def check_repos():
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
 
-		if last_commit: # if latest commit is not empty, git repo should be available, then...
+		if last_commit : # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
 				# change occurred...
 				changed += 1
@@ -272,7 +272,7 @@ def check_repos():
 		#end loop trought dict dataset
 
 	# print some final statistics
-	not_changed = len(lista) - changed
+	not_changed = len(lista) - changed - unavail
 	delta_time=datetime.datetime.now() - start_time
 	print (f"{colors.reset}❯❯ Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.blue}{str(unavail)}{colors.reset} unavailable.")
 	

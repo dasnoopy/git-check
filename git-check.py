@@ -78,6 +78,9 @@ parser.add_argument('-s','--sort', action='store_true', dest='sort_git', default
 parser.add_argument('-a','--add', action='store', dest='add_git',
 			help='append a new git url entry in the json file')
 
+parser.add_argument('-f','--find', action='store', dest='find_text',
+			help=' find text in url entry')
+
 parser.add_argument('-r','--remove', action='store', dest='entry_pos',type=checker,
 	help='delete specific numbered entry from the json file')
 
@@ -91,6 +94,7 @@ verbose=args.verbose
 checkonly=args.check_only
 listurls=args.list_repos
 addentry=args.add_git
+findTxt=args.find_text
 delentry=args.entry_pos
 sortObj=args.sort_git
 
@@ -188,6 +192,19 @@ def append_json(entry):
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"❯❯ {colors.bold}{addentry}{colors.reset} added to {fName}...")
 
+# function to find a text into url(--find 'text')
+def find_entry(text):
+	with open(fName,'r+', encoding='utf-8') as filename:
+		# First we load existing data into a dict.
+		try:
+			lista =json.load(filename) # populate dict 'lista'
+		except json.decoder.JSONDecodeError:
+			print_error(' is malformed or not a json file.')
+		for indice, x in enumerate(lista):
+			# print url list 
+			if text in lista[indice]['Repo_Url']:
+				print (f"{colors.bold}[{indice+1 :>3}] {colors.reset}{colors.fg.lightgreen}{lista[indice]['Repo_Url']}{colors.reset}")
+
 def remove_json(indice):
 	with open(fName,'r+', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
@@ -246,7 +263,7 @@ def check_repos():
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
 
-		if last_commit : # if latest commit is not empty, git repo should be available, then...
+		if last_commit: # if latest commit is not empty, git repo should be available, then...
 			if current_commit != last_commit:
 				# change occurred...
 				changed += 1
@@ -312,6 +329,8 @@ def main():
 		remove_json(delentry)
 	elif sortObj:
 		sort_json()
+	elif findTxt:
+		find_entry(findTxt)
 	else:
 		check_repos()
 	

@@ -1,7 +1,6 @@
 # git-check
 
-A simple python app that check if a remote git repos' list have new commit since last run of git-check itself.<br />
-It use `git ls-remote https:/git...` command.<br />
+A simple python app that check if a remote git repos' list have new commit since last run of itself.<br />
 
 ```
 
@@ -30,7 +29,7 @@ options:
 ```
 
 **Note:**
-before start using **git-check**, create a new json file, e.g., from command shell with:
+before start using **git-check**, create a new json file, e.g., from bash shell with:
 ```
 $ echo '[]' > filename.json
 ```

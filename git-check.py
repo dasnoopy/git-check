@@ -276,10 +276,10 @@ def check_repos():
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}- last commit stored: {colors.fg.lightcyan}{current_commit}")
-				print (f"{colors.reset}- last commit check : {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}- latest repo commit: {colors.fg.lightcyan}{last_commit}")
-				print (f"{colors.reset}- latest commit date: {colors.fg.lightgrey}{last_change}")
+				print (f"{colors.reset}- online repo commit: {colors.fg.lightcyan}{current_commit}")
+				# print (f"{colors.reset}- repo last commit date: {colors.fg.lightgrey}{last_check}")
+				print (f"{colors.reset}- stored repo commit: {colors.fg.lightcyan}{last_commit}")
+				print (f"{colors.reset}- stored commit date: {colors.fg.lightgrey}{last_change}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()

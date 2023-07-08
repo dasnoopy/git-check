@@ -221,7 +221,7 @@ def remove_json(indice):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated urls list..{colors.reset}")
+		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated list before remove any other entry.{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -276,16 +276,17 @@ def check_repos():
 
 			# show commits info if --verbose is passed
 			if verbose:
-				print (f"{colors.reset}- online repo commit: {colors.fg.lightcyan}{current_commit}")
+				print (f"{colors.reset}- remote repo commit: {colors.fg.lightcyan}{current_commit}")
 				# print (f"{colors.reset}- repo last commit date: {colors.fg.lightgrey}{last_check}")
-				print (f"{colors.reset}- stored repo commit: {colors.fg.lightcyan}{last_commit}")
-				print (f"{colors.reset}- stored commit date: {colors.fg.lightgrey}{last_change}")
+				print (f"{colors.reset}- local repo commit : {colors.fg.lightcyan}{last_commit}")
+				print (f"{colors.reset}- local commit date : {colors.fg.lightgrey}{last_change}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
 		else: # if last_commit is empty, probably, there is an issue accessing the git repo
 			last_commit = current_commit
 			unavail += 1
+			print (f"{colors.reset}{colors.fg.yellow}❯❯ Not available repo: {colors.bold}{repo_url}{colors.reset}")
 		#end loop trought dict dataset
 
 	# print some final statistics

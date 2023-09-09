@@ -292,7 +292,7 @@ def check_repos():
 	# print some final statistics
 	not_changed = len(lista) - changed - unavail
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}❯❯ Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} have changes. {colors.fg.blue}{str(unavail)}{colors.reset} unavailable.")
+	print (f"{colors.reset}❯❯ Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} updated. {colors.fg.blue}{str(unavail)}{colors.reset} not available.")
 	
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :

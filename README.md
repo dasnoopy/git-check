@@ -1,6 +1,6 @@
 # git-check
 
-A simple python app that check if a remote git repos' list have new commit since last run of itself.<br />
+A simple python app that scan a list of remote git repos, and report if there's a new commit since last run/check.<br />
 
 ```
 

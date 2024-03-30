@@ -51,6 +51,17 @@ class colors:
 		cyan = '\033[46m'
 		lightgrey = '\033[47m'
 
+def cursor(visible):
+	if visible:
+		# show terminal cursor
+		print('\033[?25h', end="")
+		print (colors.reset,end='\r')
+	else:
+		#hide terminal cursor
+		print('\033[?25h', end="")
+		print (colors.reset,end='\r')
+
+
 # function to convert the input and 
 # check a value or value range
 def checker(a):
@@ -117,6 +128,8 @@ def check_for_links(text: str) -> list:
 
 def print_error(err: str):
 	print (f"{colors.reset}❯❯ {colors.bold}{fName}{err}{colors.reset} Please verify and try again...")
+	# show again cursor if it is hide...
+	cursor(True)
 	sys.exit(1)
 
 # function to sort jsno wntries by url key (-s, --sort argument)
@@ -179,8 +192,9 @@ def append_json(entry):
 			urllist.append(lista[indice]['Repo_Url'])
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
+			cursor(True)
 			print (f"{colors.reset}❯❯ {entry['Repo_Url']}{colors.bold} already exists in {colors.reset}{fName}...")
-			sys.exit()
+			sys.exit(1)
 		else:
 			lista.append(entry)
 		# Sets file's current position at offset.
@@ -221,7 +235,7 @@ def remove_json(indice):
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
 		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please use list option (-l or --list) to view updated list before remove any other entry.{colors.reset}")
+		print (f"{colors.fg.lightgrey}❯❯ Please use -l or --list option to view updated repo list before remove any other entry.{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -236,7 +250,7 @@ def check_repos():
 				lista =json.load(filename) # populate dict 'lista'
 			except json.decoder.JSONDecodeError:
 				print_error(' is malformed or not a json file.')
-	# init some variables
+	# initialize some variables
 	changed = 0
 	not_changed = 0
 	unavail = 0
@@ -304,8 +318,7 @@ def check_repos():
 # main program
 def main():
 	# hide cursor while show output messages
-	print('\033[?25l', end="") 
-	print (colors.reset,end='\r')
+	cursor(False)
 
 	# check if json file exist
 	if not os.path.exists(fName):
@@ -335,9 +348,8 @@ def main():
 	else:
 		check_repos()
 	
-	# show cursor again and restore normal output. Then exit	
-	print('\033[?25h', end="")
-	print (colors.reset,end='\r')
+	# enable cursor again and restore normal output. Then exit	
+	cursor(True)
 	sys.exit(0)
 
 if __name__ == '__main__':

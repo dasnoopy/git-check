@@ -31,7 +31,7 @@ options:
 **Note:**
 before start using **git-check**, create a new json file, e.g., from bash shell with:
 ```
-$ echo '[]' > filename.json
+$ echo '[]' > list_of_remote_git.json
 ```
  
 then start to add git url with:

@@ -32,7 +32,8 @@ class colors:
 		blue = '\033[34m'
 		purple = '\033[35m'
 		cyan = '\033[36m'
-		lightgrey = '\033[37m'
+		white = '\033[37m'
+		
 		darkgrey = '\033[90m'
 		lightred = '\033[91m'
 		lightgreen = '\033[92m'
@@ -40,6 +41,22 @@ class colors:
 		lightblue = '\033[94m'
 		pink = '\033[95m'
 		lightcyan = '\033[96m'
+
+		bold_red  ='\033[1;31m'
+		bold_green='\033[1;32m'
+		bold_yellow='\033[1;33m'
+		bold_blue='\033[1;34m'
+		bold_purple='\033[1;35m'
+		bold_cyan='\033[1;36m'
+		bold_white='\033[1;37m'
+
+		italic_bold_red='\033[1;3;31m'
+		italic_bold_green='\033[1;3;32m'
+		italic_bold_yellow='\033[1;3;33m'
+		italic_bold_blue='\033[1;3;34m'
+		italic_bold_purple='\033[1;3;35m'
+		italic_bold_cyan='\033[1;3;36m'
+		italic_bold_white='\033[1;3;37m'
 
 	class bg:
 		black = '\033[40m'
@@ -115,9 +132,12 @@ def orario ():
 
 def get_last_commit(url):
 # get latest comming with : git ls-remote url
-		process = subprocess.Popen(["git", "ls-remote", url], stdout=subprocess.PIPE)
+	try:
+		process = subprocess.Popen(["git", "ls-remote", url], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
 		stdout, stderr = process.communicate()
 		return re.split(r'\t+', stdout.decode('ascii'))[0]
+	except subprocess.CalledProcessError as  exc:
+		raise OSError(exc.stderr)
 
 def check_for_links(text: str) -> list:
     # Checks if a given text contains HTTP links.
@@ -127,7 +147,7 @@ def check_for_links(text: str) -> list:
     return re.findall(r"(?P<url>https?://[^\s]+)", text, re.IGNORECASE)
 
 def print_error(err: str):
-	print (f"{colors.reset}❯❯ {colors.bold}{fName}{err}{colors.reset} Please verify and try again...")
+	print (f"{colors.reset}:: {colors.bold}{colors.fg.italic_bold_yellow}{fName}{err}{colors.reset} Please verify and try again...")
 	# show again cursor if it is hide...
 	cursor(True)
 	sys.exit(1)
@@ -170,11 +190,11 @@ def show_json():
 			delta_days = int(str((datetime.date.today() - last_change).days))
 			# print url list and number of days since last commit
 			if delta_days >= 30:
-				color=colors.fg.red				
+				color=colors.fg.red
 			elif delta_days >= 15:
 				color=colors.fg.yellow
 			else:
-				color=colors.fg.lightgrey
+				color=colors.fg.lightgreen
 			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} {colors.bold}[{delta_days:>3}d]")
 
 # function to append to JSON entry (--add url argument)
@@ -193,7 +213,7 @@ def append_json(entry):
 		#check if passed url already exist
 		if entry['Repo_Url'] in urllist:
 			cursor(True)
-			print (f"{colors.reset}❯❯ {entry['Repo_Url']}{colors.bold} already exists in {colors.reset}{fName}...")
+			print (f"{colors.reset}:: {entry['Repo_Url']}{colors.bold} already exists in {colors.reset}{fName}...")
 			sys.exit(1)
 		else:
 			lista.append(entry)
@@ -204,7 +224,7 @@ def append_json(entry):
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print (f"❯❯ {colors.bold}{addentry}{colors.reset} added to {fName}...")
+		print (f":: {colors.bold}{addentry}{colors.reset} added to {fName}...")
 
 # function to find a text into url(--find 'text')
 def find_entry(text):
@@ -227,15 +247,15 @@ def remove_json(indice):
 		try:
 			lista.pop(indice - 1)
 		except (IndexError):
-			print (f"{colors.reset}❯❯ Please check passed entry value: {colors.bold}range must be from 1 to {str(len(lista))}...{colors.reset}")
+			print (f"{colors.reset}:: Please check passed entry value: {colors.bold}range must be from 1 to {str(len(lista))}...{colors.reset}")
 			sys.exit()
 		# write changes
 		json_write = json.dumps(lista, indent=4, sort_keys=False)
 		with open(fName, 'w', encoding='utf-8') as filename:
 			filename.write(json_write)
 			filename.write("\n")  # Add newline (Python JSON does not)
-		print (f"{colors.reset}❯❯ Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
-		print (f"{colors.fg.lightgrey}❯❯ Please use -l or --list option to view updated repo list before remove any other entry.{colors.reset}")
+		print (f"{colors.reset}:: Entry [{str(indice)}{colors.reset}] removed from to {fName}...")
+		print (f"{colors.fg.white}:: Please use -l or --list option to view updated repo list before remove any other entry.{colors.reset}")
 
 def check_repos():
 	# open the file in read mode
@@ -257,8 +277,8 @@ def check_repos():
 	start_time = datetime.datetime.now()
 
 	# print some initial statistics
-	print (f"{colors.reset}❯❯ Check {str(len(lista))} remote git repos from file: {colors.bold}{fName}")
-	print (f"{colors.reset}❯❯ Last check: {colors.reset}{colors.bold}{lista[0]['Last_Check']}")
+	print (f"{colors.reset}:: Check {str(len(lista))} remote git repos from file: {colors.bold}{fName}")
+	print (f"{colors.reset}:: Last check: {colors.reset}{colors.bold}{lista[0]['Last_Check']}")
 
 	# search for the maximum len string value of 'Repo_Url' key
 	# Using max() + len() + list comprehension
@@ -291,22 +311,22 @@ def check_repos():
 			# show commits info if --verbose is passed
 			if verbose:
 				print (f"{colors.reset}- remote repo commit: {colors.fg.lightcyan}{current_commit}")
-				# print (f"{colors.reset}- repo last commit date: {colors.fg.lightgrey}{last_check}")
+				# print (f"{colors.reset}- repo last commit date: {colors.fg.white}{last_check}")
 				print (f"{colors.reset}- local repo commit : {colors.fg.lightcyan}{last_commit}")
-				print (f"{colors.reset}- local commit date : {colors.fg.lightgrey}{last_change}")
+				print (f"{colors.reset}- local commit date : {colors.fg.white}{last_change}")
 
 			# always update last_check value with current date/time
 			lista[indice]['Last_Check'] = orario()
 		else: # if last_commit is empty, probably, there is an issue accessing the git repo
 			last_commit = current_commit
 			unavail += 1
-			print (f"{colors.reset}{colors.fg.yellow}❯❯ Not available repo: {colors.bold}{repo_url}{colors.reset}")
+			print (f"{colors.reset}{colors.fg.italic_bold_yellow}:: Not available repo: {colors.bold}{repo_url}{colors.reset}")
 		#end loop trought dict dataset
 
 	# print some final statistics
 	not_changed = len(lista) - changed - unavail
 	delta_time=datetime.datetime.now() - start_time
-	print (f"{colors.reset}❯❯ Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} updated. {colors.fg.blue}{str(unavail)}{colors.reset} not available.")
+	print (f"{colors.reset}:: Check completed in {colors.bold}{delta_time.total_seconds():.2f}s. {colors.reset}{colors.fg.lightcyan}{str(not_changed)}{colors.reset} not changed. {colors.fg.lightblue}{str(changed)}{colors.reset} updated. {colors.fg.blue}{str(unavail)}{colors.reset} not available.")
 	
 	# dump updated dict 'lista' into the json file unless --check-only is passed
 	if not checkonly :
@@ -337,7 +357,7 @@ def main():
 					}
 			append_json(entry)
 		else:
-			print (f"{colors.reset}❯❯ {colors.bold}Wrong url format!{colors.reset} Please verify and try again.")
+			print (f"{colors.reset}:: {colors.bold}{colors.fg.italic_bold_yellow}Wrong url format!{colors.reset} Please verify and try again.")
 			sys.exit()
 	elif delentry:
 		remove_json(delentry)

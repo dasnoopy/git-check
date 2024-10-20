@@ -320,7 +320,8 @@ def check_repos():
 		else: # if last_commit is empty, probably, there is an issue accessing the git repo
 			last_commit = current_commit
 			unavail += 1
-			print (f"{colors.reset}{colors.fg.italic_bold_yellow}:: Not available repo: {colors.bold}{repo_url}{colors.reset}")
+			print ()
+			print (f"{colors.reset}{colors.fg.red}:: Error: {repo_url} not available! {colors.reset}")
 		#end loop trought dict dataset
 
 	# print some final statistics

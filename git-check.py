@@ -115,6 +115,9 @@ parser.add_argument('-r','--remove', action='store', dest='entry_pos',type=check
 parser.add_argument('jsonfile', type=pathlib.Path, 
 		help='a json file with a git repos list to check')
 
+parser.add_argument('-n','--new', action='store_true', dest='new_commit', default=False,
+			help='report only repos with new commits')
+
 args = parser.parse_args()
 
 fName=str(args.jsonfile)
@@ -125,6 +128,7 @@ addentry=args.add_git
 findTxt=args.find_text
 delentry=args.entry_pos
 sortObj=args.sort_git
+newCommit=args.new_commit
 
 # formatted datetime string
 def orario ():
@@ -292,7 +296,7 @@ def check_repos():
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = round(100 * (indice + 1) / len(lista))
-		print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
+		if not newCommit: print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
 
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
@@ -306,7 +310,7 @@ def check_repos():
 				print (f"{colors.reset}[{progress:>3}%] {colors.fg.yellow}{repo_url:<{maxlen}}{colors.bold} [✘]")
 			else:
 				# nothing changed ..
-				print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} [✔]")
+				if not newCommit: print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} [✔]")
 
 			# show commits info if --verbose is passed
 			if verbose:

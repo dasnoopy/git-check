@@ -164,7 +164,7 @@ def sort_json():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		try:
-			lista =json.load(filename) # populate dict 'lista'
+			lista = json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
 
@@ -183,7 +183,7 @@ def show_json():
 	with open(fName,'r', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		try:
-			lista =json.load(filename) # populate dict 'lista'
+			lista = json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
 		# search for the maximum len string value of 'Repo_Url' key
@@ -202,14 +202,14 @@ def show_json():
 				color=colors.fg.yellow
 			else:
 				color=colors.fg.lightgreen
-			print (f"{colors.reset}[{indice+1 :>3}] {color}{lista[indice]['Repo_Url']:<{maxlen}} {colors.bold}[{delta_days:>3}d]")
+			print (f"{colors.reset}{indice+1 :>3} │ {color}{lista[indice]['Repo_Url']:<{maxlen}} {colors.bold} │ {delta_days:>3}d")
 
 # function to append to JSON entry (--add url argument)
 def append_json(entry):
 	with open(fName,'r+', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		try:
-			lista =json.load(filename) # populate dict 'lista'
+			lista = json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
 		# append new dict element if not already exist
@@ -238,7 +238,7 @@ def find_entry(text):
 	with open(fName,'r+', encoding='utf-8') as filename:
 		# First we load existing data into a dict.
 		try:
-			lista =json.load(filename) # populate dict 'lista'
+			lista = json.load(filename) # populate dict 'lista'
 		except json.decoder.JSONDecodeError:
 			print_error(' is malformed or not a json file.')
 		for indice, x in enumerate(lista):
@@ -299,8 +299,9 @@ def check_repos():
 		current_commit = lista[indice]['Current_Commit']
 
 		progress = round(100 * (indice + 1) / len(lista))
-		if not newCommit: print (f"{colors.reset}[{progress:>3}%] {repo_url:<{maxlen}} [ ]", end='\r') # \r  next print overwrite this output
-
+		if not newCommit: print (f"{colors.reset}{indice+1:>3} │{progress:>3}% │ {repo_url:<{maxlen}}", end='\r') # \r  next print overwrite this output
+		else:
+			print (f"{colors.reset}{colors.fg.green}:: Checking progress: {progress:>3}%", end='\r')
 		# get latest comming with : git ls-remote url
 		last_commit = get_last_commit(repo_url)
 
@@ -310,10 +311,10 @@ def check_repos():
 				changed += 1
 				lista[indice]['Current_Commit'] = last_commit # update current commit with latest commint
 				lista[indice]['Last_Change'] = orario() # update time when occured last change commit
-				print (f"{colors.reset}[{progress:>3}%] {colors.fg.yellow}{repo_url:<{maxlen}}{colors.bold} [✘]")
+				print (f"{colors.reset}{colors.fg.yellow}{indice+1:>3} │{progress:>3}% │ {repo_url:<{maxlen}} │ {colors.bold}✘")
 			else:
 				# nothing changed ..
-				if not newCommit: print (f"{colors.reset}[{progress:>3}%] {colors.fg.lightgreen}{repo_url:<{maxlen}}{colors.bold} [✔]")
+				if not newCommit: print (f"{colors.reset}{colors.fg.lightgreen}{indice+1:>3} │{progress:>3}% │ {repo_url:<{maxlen}} │ {colors.bold}✔")
 
 			# show commits info if --verbose is passed
 			if verbose:
@@ -370,7 +371,9 @@ def main():
 	elif delentry:
 		remove_json(delentry)
 	elif sortObj:
+	# sort and show repos list
 		sort_json()
+		show_json()
 	elif findTxt:
 		find_entry(findTxt)
 	else:
